@@ -1,11 +1,15 @@
 <template>
   <div class="product-card">
-    <div class="image-container">
+    <div class="image-container" @click="$emit('view-product')">
       <img :src="image" :alt="name" class="product-image" />
+      <div class="image-overlay">
+        <i class="pi pi-eye view-icon"></i>
+        <span class="view-text">Pogledaj detalje</span>
+      </div>
     </div>
 
     <div class="product-info">
-      <h3 class="product-name">{{ name }}</h3>
+      <h3 class="product-name" @click="$emit('view-product')">{{ name }}</h3>
 
       <div class="price-section">
         <span class="current-price">{{ currentPrice }} €</span>
@@ -77,7 +81,7 @@ function emitBid() {
   }
 }
 
-const emit = defineEmits(['add-to-cart', 'place-bid'])
+const emit = defineEmits(['add-to-cart', 'place-bid', 'view-product'])
 </script>
 
 <style scoped>
@@ -108,6 +112,39 @@ const emit = defineEmits(['add-to-cart', 'place-bid'])
   position: relative;
   overflow: hidden;
   background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+  cursor: pointer;
+}
+
+.image-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(59, 130, 246, 0.9);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  color: white;
+  gap: 0.5rem;
+}
+
+.image-container:hover .image-overlay {
+  opacity: 1;
+}
+
+.view-icon {
+  font-size: 2rem;
+}
+
+.view-text {
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
 }
 
 .product-image {
@@ -137,6 +174,12 @@ const emit = defineEmits(['add-to-cart', 'place-bid'])
   margin: 0;
   line-height: 1.4;
   text-align: center;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.product-name:hover {
+  color: #3b82f6;
 }
 
 .price-section {

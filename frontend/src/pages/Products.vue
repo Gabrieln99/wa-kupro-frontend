@@ -10,7 +10,14 @@
         <span>{{ notification.message }}</span>
       </div>
 
-      <div class="products-grid">
+      <!-- Loading state -->
+      <div v-if="loading" class="loading-container">
+        <i class="pi pi-spin pi-spinner loading-icon"></i>
+        <span>Učitavanje proizvoda...</span>
+      </div>
+
+      <!-- Products grid -->
+      <div v-else class="products-grid">
         <Card
           v-for="product in products"
           :key="product.id"
@@ -20,6 +27,7 @@
           :is-bidding="product.isBidding"
           @add-to-cart="handleAddToCart(product)"
           @place-bid="handlePlaceBid(product, $event)"
+          @view-product="handleViewProduct(product)"
         />
       </div>
     </div>
@@ -28,7 +36,7 @@
 </template>
 
 <script setup>
-import { ref, reactive } from 'vue'
+import { ref, reactive, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
 import Navbar from '@/components/Navbar.vue'
@@ -40,78 +48,169 @@ const authStore = useAuthStore()
 const router = useRouter()
 
 // Reactive products data
-const products = ref([
-  {
-    id: 1,
-    name: 'iPhone 15 Pro',
-    currentPrice: 999,
-    originalPrice: 999,
-    image: 'https://via.placeholder.com/300x200/3b82f6/ffffff?text=iPhone+15',
-    isBidding: false,
-    category: 'Elektronika',
-    stock: 5,
-    color: 'Titanium',
-    description: 'Najnoviji iPhone s titanijskim kućištem',
-  },
-  {
-    id: 2,
-    name: 'Vintage Rolex',
-    currentPrice: 2500,
-    originalPrice: 2500,
-    image: 'https://via.placeholder.com/300x200/10b981/ffffff?text=Rolex',
-    isBidding: true,
-    category: 'Satovi',
-    stock: 1,
-    color: 'Zlatni',
-    description: 'Rijetki vintage Rolex iz 1960-ih',
-    bestBid: 2500,
-    bestBidder: 'user123',
-  },
-  {
-    id: 3,
-    name: 'MacBook Pro',
-    currentPrice: 1899,
-    originalPrice: 1899,
-    image: 'https://via.placeholder.com/300x200/3b82f6/ffffff?text=MacBook',
-    isBidding: false,
-    category: 'Računala',
-    stock: 3,
-    color: 'Space Grey',
-    description: 'MacBook Pro 14-inch s M3 čipom',
-  },
-  {
-    id: 4,
-    name: 'Antique Vase',
-    currentPrice: 150,
-    originalPrice: 150,
-    image: 'https://via.placeholder.com/300x200/fbbf24/ffffff?text=Antique+Vase',
-    isBidding: true,
-    category: 'Antikviteti',
-    stock: 1,
-    color: 'Plavi',
-    description: 'Stara kineska vaza iz Ming dinastije',
-    bestBid: 150,
-    bestBidder: 'collector1',
-  },
-  {
-    id: 5,
-    name: 'Gaming Chair',
-    currentPrice: 299,
-    originalPrice: 299,
-    image: 'https://via.placeholder.com/300x200/3b82f6/ffffff?text=Gaming+Chair',
-    isBidding: false,
-    category: 'Namještaj',
-    stock: 8,
-    color: 'Crni',
-    description: 'Ergonomska gaming stolica s LED osvjetljenjem',
-  },
-])
+const products = ref([])
+const loading = ref(true)
 
 // Cart state
 const cart = ref([])
 
 // Notification system
 const notification = ref(null)
+
+// Load products from API
+const loadProducts = async () => {
+  try {
+    loading.value = true
+    const response = await fetch('http://localhost:3000/api/products')
+    if (response.ok) {
+      const data = await response.json()
+      products.value = data.map((product) => ({
+        ...product,
+        id: product._id, // Convert MongoDB _id to id for consistency
+      }))
+    } else {
+      console.error('Failed to load products')
+      // Fall back to mock data if API fails
+      products.value = [
+        {
+          id: 1,
+          name: 'iPhone 15 Pro',
+          currentPrice: 999,
+          originalPrice: 999,
+          image: 'https://via.placeholder.com/300x200/3b82f6/ffffff?text=iPhone+15',
+          isBidding: false,
+          category: 'Elektronika',
+          stock: 5,
+          color: 'Titanium',
+          description: 'Najnoviji iPhone s titanijskim kućištem',
+        },
+        {
+          id: 2,
+          name: 'Vintage Rolex',
+          currentPrice: 2500,
+          originalPrice: 2500,
+          image: 'https://via.placeholder.com/300x200/10b981/ffffff?text=Rolex',
+          isBidding: true,
+          category: 'Satovi',
+          stock: 1,
+          color: 'Zlatni',
+          description: 'Rijetki vintage Rolex iz 1960-ih',
+          bestBid: 2500,
+          bestBidder: 'user123',
+        },
+        {
+          id: 3,
+          name: 'MacBook Pro',
+          currentPrice: 1899,
+          originalPrice: 1899,
+          image: 'https://via.placeholder.com/300x200/3b82f6/ffffff?text=MacBook',
+          isBidding: false,
+          category: 'Računala',
+          stock: 3,
+          color: 'Space Grey',
+          description: 'MacBook Pro 14-inch s M3 čipom',
+        },
+        {
+          id: 4,
+          name: 'Antique Vase',
+          currentPrice: 150,
+          originalPrice: 150,
+          image: 'https://via.placeholder.com/300x200/fbbf24/ffffff?text=Antique+Vase',
+          isBidding: true,
+          category: 'Antikviteti',
+          stock: 1,
+          color: 'Plavi',
+          description: 'Stara kineska vaza iz Ming dinastije',
+          bestBid: 150,
+          bestBidder: 'collector1',
+        },
+        {
+          id: 5,
+          name: 'Gaming Chair',
+          currentPrice: 299,
+          originalPrice: 299,
+          image: 'https://via.placeholder.com/300x200/3b82f6/ffffff?text=Gaming+Chair',
+          isBidding: false,
+          category: 'Namještaj',
+          stock: 8,
+          color: 'Crni',
+          description: 'Ergonomska gaming stolica s LED osvjetljenjem',
+        },
+      ]
+    }
+  } catch (error) {
+    console.error('Error loading products:', error)
+    // Use mock data as fallback
+    products.value = [
+      {
+        id: 1,
+        name: 'iPhone 15 Pro',
+        currentPrice: 999,
+        originalPrice: 999,
+        image: 'https://via.placeholder.com/300x200/3b82f6/ffffff?text=iPhone+15',
+        isBidding: false,
+        category: 'Elektronika',
+        stock: 5,
+        color: 'Titanium',
+        description: 'Najnoviji iPhone s titanijskim kućištem',
+      },
+      {
+        id: 2,
+        name: 'Vintage Rolex',
+        currentPrice: 2500,
+        originalPrice: 2500,
+        image: 'https://via.placeholder.com/300x200/10b981/ffffff?text=Rolex',
+        isBidding: true,
+        category: 'Satovi',
+        stock: 1,
+        color: 'Zlatni',
+        description: 'Rijetki vintage Rolex iz 1960-ih',
+        bestBid: 2500,
+        bestBidder: 'user123',
+      },
+      {
+        id: 3,
+        name: 'MacBook Pro',
+        currentPrice: 1899,
+        originalPrice: 1899,
+        image: 'https://via.placeholder.com/300x200/3b82f6/ffffff?text=MacBook',
+        isBidding: false,
+        category: 'Računala',
+        stock: 3,
+        color: 'Space Grey',
+        description: 'MacBook Pro 14-inch s M3 čipom',
+      },
+      {
+        id: 4,
+        name: 'Antique Vase',
+        currentPrice: 150,
+        originalPrice: 150,
+        image: 'https://via.placeholder.com/300x200/fbbf24/ffffff?text=Antique+Vase',
+        isBidding: true,
+        category: 'Antikviteti',
+        stock: 1,
+        color: 'Plavi',
+        description: 'Stara kineska vaza iz Ming dinastije',
+        bestBid: 150,
+        bestBidder: 'collector1',
+      },
+      {
+        id: 5,
+        name: 'Gaming Chair',
+        currentPrice: 299,
+        originalPrice: 299,
+        image: 'https://via.placeholder.com/300x200/3b82f6/ffffff?text=Gaming+Chair',
+        isBidding: false,
+        category: 'Namještaj',
+        stock: 8,
+        color: 'Crni',
+        description: 'Ergonomska gaming stolica s LED osvjetljenjem',
+      },
+    ]
+  } finally {
+    loading.value = false
+  }
+}
 
 function showNotification(message, type = 'success', icon = 'pi pi-check') {
   notification.value = { message, type, icon }
@@ -209,6 +308,16 @@ function handlePlaceBid(product, bidAmount) {
     })
   }
 }
+
+function handleViewProduct(product) {
+  // Navigate to single product page with product ID
+  router.push(`/products/${product.id}`)
+}
+
+// Load products on component mount
+onMounted(() => {
+  loadProducts()
+})
 </script>
 
 <style scoped>
@@ -229,6 +338,26 @@ function handlePlaceBid(product, bidAmount) {
   font-weight: 700;
   margin-bottom: 1rem;
   text-align: center;
+}
+
+/* Loading state */
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 300px;
+  gap: 15px;
+}
+
+.loading-icon {
+  font-size: 3rem;
+  color: #2a5298;
+}
+
+.loading-container span {
+  color: #666;
+  font-size: 1.1rem;
 }
 
 .notification {
