@@ -29,9 +29,15 @@
 
 <script setup>
 import { ref, reactive } from 'vue'
+import { useRouter } from 'vue-router'
+import { useAuthStore } from '@/stores/auth'
 import Navbar from '@/components/Navbar.vue'
 import Footer from '@/components/Footer.vue'
 import Card from '@/components/Card.vue'
+
+// Auth store
+const authStore = useAuthStore()
+const router = useRouter()
 
 // Reactive products data
 const products = ref([
@@ -115,6 +121,20 @@ function showNotification(message, type = 'success', icon = 'pi pi-check') {
 }
 
 function handleAddToCart(product) {
+  // Check if user is authenticated
+  if (!authStore.isAuthenticated) {
+    showNotification(
+      'Morate se prijaviti da biste dodali proizvode u košaricu!',
+      'error',
+      'pi pi-exclamation-triangle',
+    )
+    // Redirect to login page after a short delay
+    setTimeout(() => {
+      router.push('/login')
+    }, 1000)
+    return
+  }
+
   // Check if product is already in cart
   const existingItem = cart.value.find((item) => item.id === product.id)
 
@@ -140,6 +160,20 @@ function handleAddToCart(product) {
 }
 
 function handlePlaceBid(product, bidAmount) {
+  // Check if user is authenticated
+  if (!authStore.isAuthenticated) {
+    showNotification(
+      'Morate se prijaviti da biste mogli postavljati ponude!',
+      'error',
+      'pi pi-exclamation-triangle',
+    )
+    // Redirect to login page after a short delay
+    setTimeout(() => {
+      router.push('/login')
+    }, 1000)
+    return
+  }
+
   // Validate bid
   if (bidAmount <= product.currentPrice) {
     showNotification(
@@ -156,7 +190,7 @@ function handlePlaceBid(product, bidAmount) {
     // Update the current price (highest bid)
     products.value[productIndex].currentPrice = bidAmount
     products.value[productIndex].bestBid = bidAmount
-    products.value[productIndex].bestBidder = 'currentUser' // This would be the logged-in user
+    products.value[productIndex].bestBidder = authStore.user?.id || 'currentUser'
 
     showNotification(
       `Vaša ponuda od ${bidAmount}€ za ${product.name} je uspješno postavljena!`,
@@ -170,6 +204,7 @@ function handlePlaceBid(product, bidAmount) {
       productName: product.name,
       bidAmount: bidAmount,
       previousPrice: product.currentPrice,
+      userId: authStore.user?.id,
       timestamp: new Date().toISOString(),
     })
   }

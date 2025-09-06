@@ -15,9 +15,10 @@
         <!-- Direct sale button -->
         <Button
           v-if="!isBidding"
-          label="Dodaj u košaricu"
-          icon="pi pi-shopping-cart"
+          :label="isAuthenticated ? 'Dodaj u košaricu' : 'Prijavite se za kupnju'"
+          :icon="isAuthenticated ? 'pi pi-shopping-cart' : 'pi pi-sign-in'"
           class="action-btn cart-btn"
+          :class="{ 'disabled-btn': !isAuthenticated }"
           @click="$emit('add-to-cart')"
         />
 
@@ -29,14 +30,19 @@
               type="number"
               :min="currentPrice + 1"
               class="bid-input"
-              :placeholder="`Min. ${currentPrice + 1}€`"
+              :class="{ 'disabled-input': !isAuthenticated }"
+              :placeholder="
+                isAuthenticated ? `Min. ${currentPrice + 1}€` : 'Prijavite se za ponude'
+              "
+              :disabled="!isAuthenticated"
             />
           </div>
           <Button
-            label="Ponudi"
-            icon="pi pi-money-bill"
+            :label="isAuthenticated ? 'Ponudi' : 'Prijavite se'"
+            :icon="isAuthenticated ? 'pi pi-money-bill' : 'pi pi-sign-in'"
             class="action-btn bid-btn"
-            :disabled="!bidValue || bidValue <= currentPrice"
+            :class="{ 'disabled-btn': !isAuthenticated }"
+            :disabled="!isAuthenticated || !bidValue || bidValue <= currentPrice"
             @click="emitBid"
           />
         </div>
@@ -47,7 +53,10 @@
 
 <script setup>
 import { ref } from 'vue'
+import { useAuthStore } from '@/stores/auth'
 import Button from 'primevue/button'
+
+const authStore = useAuthStore()
 
 const props = defineProps({
   name: String,
@@ -57,6 +66,9 @@ const props = defineProps({
 })
 
 const bidValue = ref('')
+
+// Computed property for authentication status
+const isAuthenticated = authStore.isAuthenticated
 
 function emitBid() {
   if (bidValue.value && Number(bidValue.value) > props.currentPrice) {
@@ -264,6 +276,44 @@ const emit = defineEmits(['add-to-cart', 'place-bid'])
 
 .bid-btn:disabled::before {
   display: none;
+}
+
+/* Disabled states for non-authenticated users */
+.disabled-btn {
+  background: #6b7280 !important;
+  color: #d1d5db !important;
+  cursor: not-allowed !important;
+  transform: none !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+}
+
+.disabled-btn:hover {
+  background: #6b7280 !important;
+  transform: none !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+}
+
+.disabled-btn::before {
+  display: none !important;
+}
+
+.disabled-input {
+  background: #f3f4f6 !important;
+  color: #9ca3af !important;
+  cursor: not-allowed !important;
+  border-color: #d1d5db !important;
+}
+
+.disabled-input:focus {
+  border-color: #d1d5db !important;
+  background: #f3f4f6 !important;
+  box-shadow: none !important;
+  transform: none !important;
+}
+
+.disabled-input::placeholder {
+  color: #9ca3af !important;
+  font-style: italic;
 }
 
 /* Add subtle animation to the entire card */
