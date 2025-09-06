@@ -14,6 +14,11 @@ const app = createApp(App)
 app.use(PrimeVue, {
   theme: {
     preset: Aura,
+    options: {
+      prefix: 'p',
+      darkModeSelector: 'system',
+      cssLayer: false,
+    },
   },
   ripple: true,
   inputStyle: 'filled',

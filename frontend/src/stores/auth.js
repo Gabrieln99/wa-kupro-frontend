@@ -39,5 +39,14 @@ export const useAuthStore = defineStore('auth', {
         console.error('Logout error:', error)
       }
     },
+
+    async register(userData) {
+      try {
+        const { data } = await userService.register(userData)
+        return data
+      } catch (error) {
+        throw error.response?.data || error
+      }
+    },
   },
 })

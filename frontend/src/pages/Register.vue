@@ -2,7 +2,7 @@
   <div class="page-content">
     <Navbar />
     <div class="main-content">
-      <h2>Registracija</h2>
+      <RegisterForm />
     </div>
     <Footer />
   </div>
@@ -11,6 +11,7 @@
 <script setup>
 import Navbar from '@/components/Navbar.vue'
 import Footer from '@/components/Footer.vue'
+import RegisterForm from '@/components/RegisterForm.vue'
 </script>
 
 <style scoped>
@@ -21,5 +22,9 @@ import Footer from '@/components/Footer.vue'
 }
 .main-content {
   flex: 1;
+  padding: 3rem 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 </style>
