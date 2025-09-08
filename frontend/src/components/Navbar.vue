@@ -48,11 +48,73 @@ const items = computed(() => {
     {
       label: 'Proizvodi',
       icon: 'pi pi-shopping-bag',
-      command: () => router.push('/products'),
+      items: [
+        {
+          label: 'Svi proizvodi',
+          icon: 'pi pi-list',
+          command: () => router.push('/products'),
+        },
+        {
+          label: 'Aktivne licitacije',
+          icon: 'pi pi-clock',
+          command: () => router.push('/products?bidding=active'),
+        },
+        { separator: true },
+        {
+          label: 'Kategorije',
+          icon: 'pi pi-tags',
+          items: [
+            {
+              label: 'Elektronika',
+              command: () => router.push('/products?category=Elektronika'),
+            },
+            {
+              label: 'Namještaj',
+              command: () => router.push('/products?category=Namještaj'),
+            },
+            {
+              label: 'Odjeća',
+              command: () => router.push('/products?category=Odjeća'),
+            },
+            {
+              label: 'Knjige',
+              command: () => router.push('/products?category=Knjige'),
+            },
+            {
+              label: 'Sport',
+              command: () => router.push('/products?category=Sport'),
+            },
+            {
+              label: 'Igračke',
+              command: () => router.push('/products?category=Igračke'),
+            },
+            {
+              label: 'Antikviteti',
+              command: () => router.push('/products?category=Antikviteti'),
+            },
+            {
+              label: 'Satovi',
+              command: () => router.push('/products?category=Satovi'),
+            },
+            {
+              label: 'Računala',
+              command: () => router.push('/products?category=Računala'),
+            },
+            {
+              label: 'Glazbala',
+              command: () => router.push('/products?category=Glazbala'),
+            },
+            {
+              label: 'Ostalo',
+              command: () => router.push('/products?category=Ostalo'),
+            },
+          ],
+        },
+      ],
     },
   ]
-  
-  // No menu items for authenticated users - they use the user button instead
+
+  // No additional menu items for authenticated users - they use the user button instead
   return base
 })
 
@@ -80,7 +142,7 @@ function handleLogout() {
           aria-label="Košarica"
           @click="router.push('/cart')"
         />
-        
+
         <!-- Authentication buttons for non-authenticated users -->
         <Button
           v-if="!authStore.isAuthenticated"
@@ -96,7 +158,7 @@ function handleLogout() {
           class="p-button-text p-button-rounded blue-btn"
           @click="router.push('/login')"
         />
-        
+
         <!-- User info and logout for authenticated users -->
         <Button
           v-if="authStore.isAuthenticated"

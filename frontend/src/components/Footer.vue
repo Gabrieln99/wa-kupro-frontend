@@ -18,12 +18,12 @@
 
 <style scoped>
 .footer {
-  background: #1976d2;
+  background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
   color: #fff;
   padding: 2rem 0 1rem 0;
   margin-top: 0;
   width: 100%;
-  box-shadow: 0 -2px 8px rgba(33, 150, 243, 0.08);
+  box-shadow: 0 -2px 8px rgba(30, 60, 114, 0.15);
 }
 .footer-content {
   max-width: 1200px;
@@ -47,7 +47,7 @@
 }
 .footer-tagline {
   font-size: 0.95rem;
-  color: #bbdefb;
+  color: #c5d9f7;
   margin-top: 0.2rem;
 }
 .footer-links {
@@ -64,12 +64,12 @@
 }
 .footer-link:hover,
 .footer-link:focus {
-  color: #bbdefb;
+  color: #c5d9f7;
   text-decoration: underline;
 }
 .footer-copy {
   font-size: 0.95rem;
-  color: #bbdefb;
+  color: #c5d9f7;
   margin-top: 0.5rem;
 }
 </style>

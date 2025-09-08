@@ -22,11 +22,7 @@
       <!-- Product details -->
       <div v-else class="product-container">
         <!-- Breadcrumb -->
-        <div class="breadcrumb">
-          <span @click="router.push('/products')" class="breadcrumb-link">Proizvodi</span>
-          <i class="pi pi-angle-right"></i>
-          <span class="breadcrumb-current">{{ product.name }}</span>
-        </div>
+        <Breadcrumb :current-product="product" />
 
         <div class="product-details">
           <!-- Product Image -->
@@ -161,6 +157,7 @@ import { useAuthStore } from '../stores/auth.js'
 import Button from 'primevue/button'
 import Navbar from '../components/Navbar.vue'
 import Footer from '../components/Footer.vue'
+import Breadcrumb from '../components/Breadcrumb.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -335,29 +332,6 @@ onMounted(() => {
 .not-found h2 {
   margin-bottom: 30px;
   font-size: 2rem;
-}
-
-/* Breadcrumb */
-.breadcrumb {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 30px;
-  color: white;
-  font-size: 14px;
-}
-
-.breadcrumb-link {
-  cursor: pointer;
-  transition: color 0.3s ease;
-}
-
-.breadcrumb-link:hover {
-  color: #4dabf7;
-}
-
-.breadcrumb-current {
-  color: #ffd700;
 }
 
 /* Product Container */

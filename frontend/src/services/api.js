@@ -38,12 +38,33 @@ export const userService = {
 }
 
 export const productService = {
-  getProducts: () => api.get('/products'),
+  getProducts: (params = {}) => {
+    const queryParams = new URLSearchParams()
+
+    // Add search and filter parameters
+    if (params.searchTerm) queryParams.append('search', params.searchTerm)
+    if (params.category) queryParams.append('category', params.category)
+    if (params.priceMin) queryParams.append('priceMin', params.priceMin)
+    if (params.priceMax) queryParams.append('priceMax', params.priceMax)
+    if (params.biddingStatus) queryParams.append('biddingStatus', params.biddingStatus)
+    if (params.sortBy) queryParams.append('sortBy', params.sortBy)
+    if (params.userId) queryParams.append('userId', params.userId)
+    if (params.page) queryParams.append('page', params.page)
+    if (params.limit) queryParams.append('limit', params.limit)
+
+    const queryString = queryParams.toString()
+    return api.get(`/products${queryString ? `?${queryString}` : ''}`)
+  },
   getProduct: (id) => api.get(`/products/${id}`),
   createProduct: (productData) => api.post('/products', productData),
   updateProduct: (id, productData) => api.put(`/products/${id}`, productData),
   deleteProduct: (id) => api.delete(`/products/${id}`),
   placeBid: (id, bidData) => api.post(`/products/${id}/bid`, bidData),
+  getBidHistory: (id) => api.get(`/products/${id}/bids`),
+  getActiveBiddings: () => api.get('/products/bidding/active'),
+  getReservedProducts: (userEmail) => api.get(`/products/reserved/${userEmail}`),
+  getCategories: () => api.get('/products/util/categories'),
+  getBiddingStatus: () => api.get('/products/bidding/status'),
 }
 
 export default api
