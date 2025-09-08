@@ -17,6 +17,28 @@ import { RouterView } from 'vue-router'
 </style>
 
 <style>
+/* Global reset and layout */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+}
+
+#app {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  min-height: 100vh;
+}
+
 /* Global blue theme overrides */
 :root {
   --p-primary-50: #eff6ff !important;

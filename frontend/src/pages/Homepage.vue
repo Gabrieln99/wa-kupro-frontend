@@ -154,10 +154,15 @@ const placeBid = async (productId, bidAmount) => {
   flex: 1;
   display: flex;
   flex-direction: column;
+  margin: 0;
+  padding: 0;
+  width: 100%;
 }
 
 .main-content {
   flex: 1;
+  margin: 0;
+  padding: 0;
 }
 
 .hero-section {
@@ -329,6 +334,7 @@ const placeBid = async (productId, bidAmount) => {
 .features-section {
   padding: 80px 20px;
   background: #f8f9fa;
+  margin: 0;
 }
 
 .container {

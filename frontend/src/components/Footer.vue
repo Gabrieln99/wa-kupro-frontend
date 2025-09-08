@@ -21,7 +21,7 @@
   background: #1976d2;
   color: #fff;
   padding: 2rem 0 1rem 0;
-  margin-top: 3rem;
+  margin-top: 0;
   width: 100%;
   box-shadow: 0 -2px 8px rgba(33, 150, 243, 0.08);
 }
