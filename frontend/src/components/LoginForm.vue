@@ -6,7 +6,7 @@
           <div class="avatar-wrapper">
             <Avatar icon="pi pi-user" size="xlarge" class="mb-3" />
           </div>
-          <h1 class="text-4xl font-bold m-0 header-title">Dobrodošli</h1>
+          <h1 class="text-4xl font-bold m-0 header-title">Dobrodošli u KuPro</h1>
           <p class="header-subtitle mt-3">Molimo prijavite se na vaš račun i nastavite kupovinu</p>
         </div>
       </template>

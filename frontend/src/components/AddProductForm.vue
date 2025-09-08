@@ -47,24 +47,14 @@
         <span v-if="errors.category" class="error-message">{{ errors.category }}</span>
       </div>
 
-      <!-- Image URL -->
+      <!-- Image Upload -->
       <div class="form-group">
-        <label for="imageUrl" class="form-label">URL slike *</label>
-        <input
-          id="imageUrl"
+        <ImageUpload
           v-model="formData.image"
-          type="url"
-          class="form-input"
+          label="Slika proizvoda"
           :class="{ error: errors.image }"
-          placeholder="https://example.com/slika.jpg"
-          required
         />
         <span v-if="errors.image" class="error-message">{{ errors.image }}</span>
-
-        <!-- Image Preview -->
-        <div v-if="formData.image && isValidUrl(formData.image)" class="image-preview">
-          <img :src="formData.image" alt="Pregled slike" @error="handleImageError" />
-        </div>
       </div>
 
       <!-- Price and Sale Type -->
@@ -179,6 +169,7 @@
 import { ref, reactive, computed } from 'vue'
 import { useAuthStore } from '../stores/auth.js'
 import Button from 'primevue/button'
+import ImageUpload from './ImageUpload.vue'
 
 // Emits
 const emit = defineEmits(['product-added', 'cancel'])
@@ -249,10 +240,7 @@ const validateForm = () => {
 
   // Image validation
   if (!formData.image.trim()) {
-    errors.image = 'URL slike je obavezan'
-    isValid = false
-  } else if (!isValidUrl(formData.image)) {
-    errors.image = 'Molimo unesite valjan URL'
+    errors.image = 'Slika je obavezna'
     isValid = false
   }
 
@@ -281,19 +269,6 @@ const validateForm = () => {
   }
 
   return isValid
-}
-
-const isValidUrl = (string) => {
-  try {
-    new URL(string)
-    return string.startsWith('http://') || string.startsWith('https://')
-  } catch {
-    return false
-  }
-}
-
-const handleImageError = () => {
-  errors.image = 'Slika se ne može učitati. Provjerite URL.'
 }
 
 const handleSubmit = async () => {
@@ -509,20 +484,6 @@ const showNotification = (message, type) => {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-}
-
-.image-preview {
-  margin-top: 10px;
-  border-radius: 8px;
-  overflow: hidden;
-  border: 2px solid #e1e5e9;
-}
-
-.image-preview img {
-  width: 100%;
-  max-height: 200px;
-  object-fit: cover;
-  display: block;
 }
 
 .error-message {

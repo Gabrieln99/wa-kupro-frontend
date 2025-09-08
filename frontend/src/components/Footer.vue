@@ -2,7 +2,7 @@
   <footer class="footer">
     <div class="footer-content">
       <div class="footer-brand">
-        <span class="footer-logo">kupro</span>
+        <span class="footer-logo">KuPro</span>
         <span class="footer-tagline">Vaše mjesto za kupoprodaju</span>
       </div>
       <div class="footer-links">
@@ -11,7 +11,7 @@
         <a href="/user-profile" class="footer-link">Profil</a>
         <a href="/cart" class="footer-link">Košarica</a>
       </div>
-      <div class="footer-copy">&copy; {{ new Date().getFullYear() }} kupro</div>
+      <div class="footer-copy">&copy; {{ new Date().getFullYear() }} KuPro</div>
     </div>
   </footer>
 </template>

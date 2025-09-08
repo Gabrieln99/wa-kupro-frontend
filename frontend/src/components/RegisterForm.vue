@@ -7,7 +7,7 @@
         </div>
         <h1 class="text-4xl font-bold m-0 header-title">Stvori račun</h1>
         <p class="text-600 mt-3 header-subtitle">
-          Pridruži nam se danas i počni svoju kupovnu avanturu
+          Pridruži se KuPro zajednici i počni svoju kupovnu avanturu
         </p>
       </div>
     </template>

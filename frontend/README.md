@@ -1,6 +1,6 @@
-# frontend
+# KuPro Frontend
 
-This template should help get you started developing with Vue 3 in Vite.
+Frontend aplikacija za KuPro trgovinu - Vue 3 + Vite aplikacija za kupoprodaju i licitacije.
 
 ## Recommended IDE Setup
 

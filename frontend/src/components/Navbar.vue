@@ -47,30 +47,12 @@ const items = computed(() => {
     },
     {
       label: 'Proizvodi',
-      icon: 'pi pi-shopping-cart',
+      icon: 'pi pi-shopping-bag',
       command: () => router.push('/products'),
     },
   ]
-  if (authStore.isAuthenticated) {
-    if (authStore.isAdmin) {
-      base.push({
-        label: 'Admin',
-        icon: 'pi pi-cog',
-        command: () => router.push('/admin'),
-      })
-    } else {
-      base.push({
-        label: 'Profil korisnika',
-        icon: 'pi pi-user',
-        command: () => router.push('/user-profile'),
-      })
-    }
-    base.push({
-      label: 'Košarica',
-      icon: 'pi pi-shopping-cart',
-      command: () => router.push('/cart'),
-    })
-  }
+  
+  // No menu items for authenticated users - they use the user button instead
   return base
 })
 
@@ -85,12 +67,21 @@ function handleLogout() {
 <template>
   <Menubar :model="items" class="custom-menubar">
     <template #start>
-      <div class="logo">
-        <span>kupro</span>
+      <div class="logo" @click="router.push('/')">
+        <span>KuPro</span>
       </div>
     </template>
     <template #end>
       <div class="auth-buttons">
+        <!-- Cart button for all users -->
+        <Button
+          icon="pi pi-shopping-cart"
+          class="p-button-text p-button-rounded cart-btn"
+          aria-label="Košarica"
+          @click="router.push('/cart')"
+        />
+        
+        <!-- Authentication buttons for non-authenticated users -->
         <Button
           v-if="!authStore.isAuthenticated"
           label="Registracija"
@@ -105,6 +96,8 @@ function handleLogout() {
           class="p-button-text p-button-rounded blue-btn"
           @click="router.push('/login')"
         />
+        
+        <!-- User info and logout for authenticated users -->
         <Button
           v-if="authStore.isAuthenticated"
           :label="
@@ -122,12 +115,6 @@ function handleLogout() {
           icon="pi pi-sign-out"
           class="p-button-text p-button-rounded blue-btn"
           @click="handleLogout"
-        />
-        <Button
-          icon="pi pi-shopping-cart"
-          class="p-button-text p-button-rounded cart-btn"
-          aria-label="Cart"
-          @click="router.push('/cart')"
         />
       </div>
     </template>
@@ -155,6 +142,12 @@ function handleLogout() {
   padding-right: 2rem;
   font-family: 'Segoe UI', Arial, sans-serif;
   user-select: none;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.logo:hover {
+  color: #1565c0;
 }
 
 .auth-buttons {

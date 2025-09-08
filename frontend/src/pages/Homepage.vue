@@ -4,7 +4,7 @@
     <div class="main-content">
       <div class="hero-section">
         <div class="hero-content">
-          <h1 class="hero-title">Dobrodošli u kupro</h1>
+          <h1 class="hero-title">Dobrodošli u KuPro</h1>
           <p class="hero-subtitle">Vaša trgovina za jedinstvene proizvode i licitacije</p>
           <div class="hero-buttons">
             <button class="cta-button primary" @click="$router.push('/products')">
@@ -63,7 +63,7 @@
 
       <div class="features-section">
         <div class="container">
-          <h2>Zašto odabrati kupro?</h2>
+          <h2>Zašto odabrati KuPro?</h2>
           <div class="features-grid">
             <div class="feature-card">
               <i class="pi pi-shield feature-icon"></i>
