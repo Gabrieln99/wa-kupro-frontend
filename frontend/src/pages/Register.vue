@@ -26,5 +26,7 @@ import RegisterForm from '@/components/RegisterForm.vue'
   display: flex;
   align-items: center;
   justify-content: center;
+  background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+  min-height: 100vh;
 }
 </style>

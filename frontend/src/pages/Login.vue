@@ -2,10 +2,8 @@
   <div class="page-content">
     <Navbar />
     <div class="main-content">
-      <div class="flex justify-content-center align-items-center">
-        <div class="w-full md:w-6 lg:w-4">
-          <LoginForm />
-        </div>
+      <div class="login-wrapper">
+        <LoginForm />
       </div>
     </div>
     <Footer />
@@ -20,11 +18,38 @@ import LoginForm from '@/components/LoginForm.vue'
 
 <style scoped>
 .page-content {
-  flex: 1;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
 }
+
 .main-content {
   flex: 1;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+  min-height: calc(100vh - 120px); /* Account for navbar and footer */
+}
+
+.login-wrapper {
+  width: 100%;
+  max-width: 500px;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+@media (max-width: 768px) {
+  .main-content {
+    min-height: calc(100vh - 100px);
+    padding: 10px;
+  }
+
+  .login-wrapper {
+    max-width: 95%;
+    padding: 10px;
+  }
 }
 </style>

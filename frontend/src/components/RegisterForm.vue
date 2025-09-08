@@ -481,7 +481,7 @@ const handleRegister = async () => {
 }
 
 .header-section {
-  background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+  background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
   color: white;
   padding: 3rem 2rem;
   position: relative;
@@ -513,7 +513,7 @@ const handleRegister = async () => {
 .header-subtitle {
   position: relative;
   z-index: 2;
-  color: rgba(255, 255, 255, 0.9);
+  color: rgba(255, 255, 255, 0.9) !important;
   font-size: 1.1rem;
 }
 
@@ -683,23 +683,23 @@ const handleRegister = async () => {
   padding: 1rem 1.5rem;
   font-size: 1.1rem;
   font-weight: 600;
-  background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+  background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
   border: none;
   border-radius: 0.75rem;
   transition: all 0.3s ease;
 }
 
 .register-btn:hover {
-  background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
+  background: linear-gradient(135deg, #1a365d 0%, #2a5298 100%);
   transform: translateY(-2px);
-  box-shadow: 0 10px 25px -5px rgba(59, 130, 246, 0.4);
+  box-shadow: 0 10px 25px -5px rgba(42, 82, 152, 0.4);
 }
 
 .login-link-btn {
   width: 100%;
   padding: 0.875rem 1.5rem;
   border-radius: 0.75rem;
-  border: 2px solid #3b82f6;
+  border: 2px solid #2a5298;
   transition: all 0.3s ease;
 }
 
@@ -743,8 +743,8 @@ const handleRegister = async () => {
 }
 
 :deep(.p-checkbox .p-checkbox-box.p-highlight) {
-  background: #3b82f6;
-  border-color: #3b82f6;
+  background: #2a5298;
+  border-color: #2a5298;
 }
 
 :deep(.p-password .p-password-meter) {

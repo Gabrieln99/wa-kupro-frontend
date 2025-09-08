@@ -151,10 +151,15 @@ const handleLogin = async () => {
 
   try {
     loading.value = true
+    console.log('🔐 LoginForm: Starting login process...')
     await authStore.login({
       username: username.value.trim(),
       password: password.value,
     })
+
+    console.log('✅ LoginForm: Login successful!')
+    console.log('👤 Current logged in user:', authStore.user)
+    console.log('🎭 User role:', authStore.role)
 
     if (rememberMe.value) {
       localStorage.setItem('rememberedUsername', username.value)
@@ -167,7 +172,14 @@ const handleLogin = async () => {
       life: 3000,
     })
 
-    router.push('/dashboard')
+    // Redirect based on user role
+    if (authStore.isAdmin) {
+      console.log('🚀 Redirecting admin to /admin')
+      router.push('/admin')
+    } else {
+      console.log('🚀 Redirecting user to /user-profile')
+      router.push('/user-profile')
+    }
   } catch (error) {
     toast.add({
       severity: 'error',
@@ -183,12 +195,11 @@ const handleLogin = async () => {
 
 <style scoped>
 .login-container {
-  min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
-  padding: 2rem 1rem;
+  padding: 0;
+  width: 100%;
 }
 
 .login-card {
@@ -234,7 +245,7 @@ const handleLogin = async () => {
 .header-subtitle {
   position: relative;
   z-index: 2;
-  color: rgba(255, 255, 255, 0.9);
+  color: rgba(255, 255, 255, 0.9) !important;
   font-size: 1.1rem;
 }
 
@@ -462,11 +473,12 @@ const handleLogin = async () => {
 /* Responsive design */
 @media (max-width: 640px) {
   .login-container {
-    padding: 1rem;
+    padding: 0;
   }
 
   .login-card {
     max-width: 100%;
+    margin: 0 10px;
   }
 
   .header-section {

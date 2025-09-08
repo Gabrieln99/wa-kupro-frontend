@@ -37,4 +37,13 @@ export const userService = {
   promoteUser: (id) => api.patch(`/users/promote/${id}`),
 }
 
+export const productService = {
+  getProducts: () => api.get('/products'),
+  getProduct: (id) => api.get(`/products/${id}`),
+  createProduct: (productData) => api.post('/products', productData),
+  updateProduct: (id, productData) => api.put(`/products/${id}`, productData),
+  deleteProduct: (id) => api.delete(`/products/${id}`),
+  placeBid: (id, bidData) => api.post(`/products/${id}/bid`, bidData),
+}
+
 export default api

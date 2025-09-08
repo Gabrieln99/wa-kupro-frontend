@@ -1,12 +1,42 @@
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted, watch } from 'vue'
 import { useRouter } from 'vue-router'
+import { useAuthStore } from '../stores/auth.js'
 import Menubar from 'primevue/menubar'
 import Button from 'primevue/button'
 
-const isLoggedIn = ref(false)
-
+const authStore = useAuthStore()
 const router = useRouter()
+
+// Watch for auth changes and log current user
+watch(
+  () => authStore.user,
+  (newUser, oldUser) => {
+    if (newUser !== oldUser) {
+      console.log('👤 Navbar: Auth state changed')
+      console.log('Previous user:', oldUser)
+      console.log('Current user:', newUser)
+      console.log('Is authenticated:', authStore.isAuthenticated)
+      console.log('User role:', authStore.role)
+      console.log('Has token:', !!authStore.token)
+
+      // Check for inconsistent state
+      if (authStore.token && (!authStore.user || !authStore.role)) {
+        console.log('⚠️ Inconsistent auth state detected in Navbar!')
+        console.log('Token exists but missing user/role data - clearing auth state')
+        authStore.clearAuthState()
+      }
+    }
+  },
+  { immediate: true },
+)
+
+onMounted(() => {
+  console.log('🧭 Navbar mounted - Current session:')
+  console.log('👤 Current user:', authStore.user)
+  console.log('🔐 Is authenticated:', authStore.isAuthenticated)
+  console.log('🎭 User role:', authStore.role)
+})
 
 const items = computed(() => {
   const base = [
@@ -21,18 +51,33 @@ const items = computed(() => {
       command: () => router.push('/products'),
     },
   ]
-  if (isLoggedIn.value) {
+  if (authStore.isAuthenticated) {
+    if (authStore.isAdmin) {
+      base.push({
+        label: 'Admin',
+        icon: 'pi pi-cog',
+        command: () => router.push('/admin'),
+      })
+    } else {
+      base.push({
+        label: 'Profil korisnika',
+        icon: 'pi pi-user',
+        command: () => router.push('/user-profile'),
+      })
+    }
     base.push({
-      label: 'Profil korisnika',
-      icon: 'pi pi-user',
-      command: () => router.push('/user-profile'),
+      label: 'Košarica',
+      icon: 'pi pi-shopping-cart',
+      command: () => router.push('/cart'),
     })
   }
   return base
 })
 
 function handleLogout() {
-  isLoggedIn.value = false
+  console.log('🚪 Navbar: Logout triggered')
+  console.log('👤 Current user before logout:', authStore.user)
+  authStore.logout()
   router.push('/')
 }
 </script>
@@ -47,21 +92,32 @@ function handleLogout() {
     <template #end>
       <div class="auth-buttons">
         <Button
-          v-if="!isLoggedIn"
+          v-if="!authStore.isAuthenticated"
           label="Registracija"
           icon="pi pi-user-plus"
           class="p-button-text p-button-rounded blue-btn"
           @click="router.push('/register')"
         />
         <Button
-          v-if="!isLoggedIn"
+          v-if="!authStore.isAuthenticated"
           label="Prijava"
           icon="pi pi-sign-in"
           class="p-button-text p-button-rounded blue-btn"
           @click="router.push('/login')"
         />
         <Button
-          v-if="isLoggedIn"
+          v-if="authStore.isAuthenticated"
+          :label="
+            authStore.user?.name && authStore.user?.surname
+              ? `${authStore.user.name} ${authStore.user.surname}`
+              : authStore.user?.username || 'Korisnik'
+          "
+          icon="pi pi-user"
+          class="p-button-text p-button-rounded blue-btn"
+          @click="router.push(authStore.isAdmin ? '/admin' : '/user-profile')"
+        />
+        <Button
+          v-if="authStore.isAuthenticated"
           label="Odjava"
           icon="pi pi-sign-out"
           class="p-button-text p-button-rounded blue-btn"

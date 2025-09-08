@@ -333,7 +333,7 @@ onMounted(() => {
 }
 
 .main-content h2 {
-  color: #1e293b;
+  color: #2a5298;
   font-size: 2rem;
   font-weight: 700;
   margin-bottom: 1rem;
