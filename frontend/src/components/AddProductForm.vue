@@ -290,7 +290,8 @@ const handleSubmit = async () => {
     }
 
     // Send to backend
-    const response = await fetch('http://localhost:3000/api/products', {
+    const apiUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000/api'
+    const response = await fetch(`${apiUrl}/products`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

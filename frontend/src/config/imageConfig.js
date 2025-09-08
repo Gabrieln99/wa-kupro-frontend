@@ -3,7 +3,7 @@
 
 export const IMAGE_CONFIG = {
   // Backend API endpoints
-  BACKEND_BASE_URL: 'http://localhost:3000/api',
+  BACKEND_BASE_URL: import.meta.env.VITE_BACKEND_BASE_URL || 'http://localhost:3000/api',
   UPLOAD_ENDPOINT: '/images/upload',
   VALIDATE_URL_ENDPOINT: '/images/validate-url',
   CONFIG_ENDPOINT: '/images/config',

@@ -251,7 +251,8 @@ const ensureUserProfile = async () => {
 const loadMyProducts = async () => {
   try {
     loading.value = true
-    const response = await fetch('http://localhost:3000/api/products')
+    const apiUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000/api'
+    const response = await fetch(`${apiUrl}/products`)
     if (response.ok) {
       const allProducts = await response.json()
       // Filter products by current user (you might want to add user filtering in backend)
@@ -282,7 +283,8 @@ const deleteMyProduct = async (productId) => {
   }
 
   try {
-    const response = await fetch(`http://localhost:3000/api/products/${productId}`, {
+    const apiUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000/api'
+    const response = await fetch(`${apiUrl}/products/${productId}`, {
       method: 'DELETE',
       headers: {
         Authorization: `Bearer ${authStore.token}`,

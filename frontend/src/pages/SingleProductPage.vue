@@ -194,7 +194,8 @@ const loadProduct = async () => {
     const productId = route.params.id
 
     // Simulate API call - replace with actual API call
-    const response = await fetch(`http://localhost:3000/api/products/${productId}`)
+    const apiUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000/api'
+    const response = await fetch(`${apiUrl}/products/${productId}`)
     if (response.ok) {
       product.value = await response.json()
     } else {
@@ -242,7 +243,8 @@ const handlePlaceBid = async () => {
 
   try {
     // Place bid logic - replace with actual API call
-    const response = await fetch(`http://localhost:3000/api/products/${product.value._id}/bid`, {
+    const apiUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000/api'
+    const response = await fetch(`${apiUrl}/products/${product.value._id}/bid`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
