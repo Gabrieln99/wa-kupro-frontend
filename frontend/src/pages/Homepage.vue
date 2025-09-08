@@ -127,7 +127,7 @@ const addToCart = (product) => {
     router.push('/login')
     return
   }
-  
+
   // Add to cart logic here
   console.log('Adding to cart:', product)
   // You can implement cart functionality here
@@ -138,7 +138,7 @@ const placeBid = async (productId, bidAmount) => {
     router.push('/login')
     return
   }
-  
+
   try {
     // Place bid logic here
     console.log('Placing bid:', productId, bidAmount)
