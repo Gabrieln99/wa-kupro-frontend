@@ -1,0 +1,148 @@
+/* Dark Mode CSS Custom Properties */
+
+/* Apply to body for system dark mode detection */
+body {
+  background-color: var(--app-bg-color, #ffffff);
+  color: var(--app-text-color, #1f2937);
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
+}
+
+/* Light theme (default) */
+:root {
+  --app-bg-color: #ffffff;
+  --app-text-color: #1f2937;
+  --app-text-secondary: #6b7280;
+  --app-border-color: #e5e7eb;
+  --app-surface-color: #ffffff;
+  --app-surface-secondary: #f9fafb;
+  --app-shadow: rgba(0, 0, 0, 0.1);
+  --app-card-bg: #ffffff;
+  --app-section-bg: #f8f9fa;
+}
+
+/* Dark theme */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --app-bg-color: #111827;
+    --app-text-color: #f9fafb;
+    --app-text-secondary: #d1d5db;
+    --app-border-color: #374151;
+    --app-surface-color: #1f2937;
+    --app-surface-secondary: #374151;
+    --app-shadow: rgba(0, 0, 0, 0.3);
+    --app-card-bg: #1f2937;
+    --app-section-bg: #111827;
+  }
+}
+
+/* Global dark mode component styles */
+@media (prefers-color-scheme: dark) {
+  /* Card components */
+  .p-card {
+    background-color: var(--app-card-bg) !important;
+    border-color: var(--app-border-color) !important;
+    color: var(--app-text-color) !important;
+  }
+
+  /* Section backgrounds */
+  .recent-ads-section,
+  .features-section {
+    background-color: var(--app-section-bg) !important;
+  }
+
+  /* Feature cards */
+  .feature-card {
+    background-color: var(--app-card-bg) !important;
+    border-color: var(--app-border-color) !important;
+    color: var(--app-text-color) !important;
+  }
+
+  /* Container backgrounds */
+  .container {
+    background-color: transparent !important;
+  }
+
+  /* Text elements */
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    color: var(--app-text-color) !important;
+  }
+
+  p {
+    color: var(--app-text-secondary) !important;
+  }
+
+  /* Form elements */
+  input,
+  textarea,
+  select {
+    background-color: var(--app-surface-color) !important;
+    border-color: var(--app-border-color) !important;
+    color: var(--app-text-color) !important;
+  }
+
+  /* Loading states */
+  .loading-container {
+    color: var(--app-text-color) !important;
+  }
+
+  /* Empty states */
+  .no-ads,
+  .empty-state {
+    color: var(--app-text-color) !important;
+  }
+
+  /* Product cards */
+  .product-card {
+    background-color: var(--app-card-bg) !important;
+    border-color: var(--app-border-color) !important;
+  }
+
+  /* Breadcrumb navigation */
+  .breadcrumb {
+    background-color: var(--app-surface-secondary) !important;
+    border-color: var(--app-border-color) !important;
+  }
+
+  .breadcrumb-link {
+    color: var(--app-text-color) !important;
+  }
+
+  .breadcrumb-current {
+    color: var(--app-text-secondary) !important;
+  }
+
+  /* Filter components */
+  .filter-grid,
+  .search-section {
+    background-color: var(--app-surface-color) !important;
+  }
+
+  /* Profile sections */
+  .profile-content,
+  .settings-content {
+    background-color: var(--app-card-bg) !important;
+    color: var(--app-text-color) !important;
+  }
+
+  /* Admin panels */
+  .admin-content {
+    background-color: var(--app-section-bg) !important;
+  }
+
+  /* Modal and overlay backgrounds */
+  .modal-overlay {
+    background-color: rgba(17, 24, 39, 0.8) !important;
+  }
+
+  .modal-content {
+    background-color: var(--app-card-bg) !important;
+    color: var(--app-text-color) !important;
+  }
+}

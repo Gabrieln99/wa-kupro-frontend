@@ -186,12 +186,15 @@ function handleLogout() {
 <style scoped>
 .custom-menubar,
 .p-menubar {
-  background: #fff;
+  background: var(--app-surface-color, #fff);
   border-radius: 0;
-  box-shadow: 0 2px 8px rgba(33, 150, 243, 0.08);
+  box-shadow: 0 2px 8px var(--app-shadow, rgba(33, 150, 243, 0.08));
   border: none;
   padding-right: 2rem;
-  color: #1976d2;
+  color: var(--app-text-color, #1976d2);
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
 }
 
 .logo {
@@ -222,11 +225,12 @@ function handleLogout() {
 .blue-btn {
   color: #1976d2 !important;
   border: 1px solid #1976d2 !important;
-  background: #fff !important;
+  background: var(--app-surface-color, #fff) !important;
   transition:
     background 0.2s,
     color 0.2s;
 }
+
 .blue-btn:hover,
 .blue-btn:focus {
   background: #1976d2 !important;
@@ -237,7 +241,7 @@ function handleLogout() {
 .cart-btn {
   font-size: 1.5rem;
   color: #1976d2 !important;
-  background: #fff !important;
+  background: var(--app-surface-color, #fff) !important;
   border: 1px solid #1976d2 !important;
   border-radius: 50%;
   width: 2.5rem;
