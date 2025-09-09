@@ -5,6 +5,7 @@ import Aura from '@primeuix/themes/aura'
 import ToastService from 'primevue/toastservice'
 import 'primeicons/primeicons.css'
 import 'primeflex/primeflex.css'
+import './styles/dark-mode.css'
 
 import App from './App.vue'
 import router from './router'

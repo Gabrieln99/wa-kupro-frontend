@@ -86,18 +86,19 @@ const emit = defineEmits(['add-to-cart', 'place-bid', 'view-product'])
 
 <style scoped>
 .product-card {
-  background: #fff;
-  border: 1px solid #e2e8f0;
+  background: var(--app-card-bg, #fff);
+  border: 1px solid var(--app-border-color, #e2e8f0);
   border-radius: 1rem;
   box-shadow:
-    0 4px 6px -1px rgba(0, 0, 0, 0.1),
-    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    0 4px 6px -1px var(--app-shadow, rgba(0, 0, 0, 0.1)),
+    0 2px 4px -1px var(--app-shadow, rgba(0, 0, 0, 0.06));
   overflow: hidden;
   display: flex;
   flex-direction: column;
   width: 260px;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
+  color: var(--app-text-color, #1f2937);
 }
 
 .product-card:hover {
