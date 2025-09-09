@@ -65,6 +65,10 @@ export const productService = {
   getReservedProducts: (userEmail) => api.get(`/products/reserved/${userEmail}`),
   getCategories: () => api.get('/products/util/categories'),
   getBiddingStatus: () => api.get('/products/bidding/status'),
+
+  // Purchase methods
+  purchaseProduct: (id, purchaseData) => api.post(`/products/${id}/purchase`, purchaseData),
+  purchaseCart: (cartData) => api.post('/products/purchase/batch', cartData),
 }
 
 export default api

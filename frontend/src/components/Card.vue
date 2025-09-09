@@ -13,40 +13,68 @@
 
       <div class="price-section">
         <span class="current-price">{{ currentPrice }} €</span>
+        <span v-if="originalPrice && originalPrice !== currentPrice" class="original-price">
+          {{ originalPrice }} €
+        </span>
+      </div>
+
+      <!-- Product Status -->
+      <div class="product-status" :class="statusClass">
+        <i
+          class="pi"
+          :class="{
+            'pi-check-circle': statusClass === 'status-available',
+            'pi-clock': statusClass === 'status-bidding',
+            'pi-times-circle': statusClass === 'status-unavailable',
+            'pi-lock': statusClass === 'status-reserved',
+          }"
+        ></i>
+        <span>{{ productStatusText }}</span>
+      </div>
+
+      <!-- Bidding Info (if applicable) -->
+      <div v-if="isBidding && biddingStatus === 'active'" class="bidding-info">
+        <div v-if="timeRemaining" class="time-remaining">
+          <i class="pi pi-clock"></i>
+          <span>{{ timeRemaining }}</span>
+        </div>
+        <div v-if="bidCount > 0" class="bid-count">
+          <i class="pi pi-users"></i>
+          <span>{{ bidCount }} ponuda</span>
+        </div>
       </div>
 
       <div class="product-actions">
         <!-- Direct sale button -->
         <Button
-          v-if="!isBidding"
-          :label="isAuthenticated ? 'Dodaj u košaricu' : 'Prijavite se za kupnju'"
-          :icon="isAuthenticated ? 'pi pi-shopping-cart' : 'pi pi-sign-in'"
+          v-if="!isBidding || (isBidding && biddingStatus !== 'active')"
+          :label="getCartButtonLabel"
+          :icon="getCartButtonIcon"
           class="action-btn cart-btn"
-          :class="{ 'disabled-btn': !isAuthenticated }"
+          :class="{ 'disabled-btn': !canAddToCart }"
+          :disabled="!canAddToCart"
           @click="$emit('add-to-cart')"
         />
 
         <!-- Bidding section -->
-        <div v-else class="bid-section">
+        <div v-if="isBidding && biddingStatus === 'active'" class="bid-section">
           <div class="bid-input-wrapper">
             <input
               v-model="bidValue"
               type="number"
               :min="currentPrice + 1"
               class="bid-input"
-              :class="{ 'disabled-input': !isAuthenticated }"
-              :placeholder="
-                isAuthenticated ? `Min. ${currentPrice + 1}€` : 'Prijavite se za ponude'
-              "
-              :disabled="!isAuthenticated"
+              :class="{ 'disabled-input': !canBid }"
+              :placeholder="canBid ? `Min. ${currentPrice + 1}€` : 'Prijavite se za ponude'"
+              :disabled="!canBid"
             />
           </div>
           <Button
-            :label="isAuthenticated ? 'Ponudi' : 'Prijavite se'"
-            :icon="isAuthenticated ? 'pi pi-money-bill' : 'pi pi-sign-in'"
+            :label="canBid ? 'Ponudi' : 'Prijavite se'"
+            :icon="canBid ? 'pi pi-money-bill' : 'pi pi-sign-in'"
             class="action-btn bid-btn"
-            :class="{ 'disabled-btn': !isAuthenticated }"
-            :disabled="!isAuthenticated || !bidValue || bidValue <= currentPrice"
+            :class="{ 'disabled-btn': !canBid }"
+            :disabled="!canBid || !bidValue || bidValue <= currentPrice"
             @click="emitBid"
           />
         </div>
@@ -56,7 +84,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { useAuthStore } from '@/stores/auth'
 import Button from 'primevue/button'
 
@@ -66,13 +94,78 @@ const props = defineProps({
   name: String,
   image: String,
   currentPrice: Number,
+  originalPrice: Number,
   isBidding: Boolean,
+  biddingStatus: String,
+  timeRemaining: String,
+  bidCount: Number,
+  bestBidder: String,
+  category: String,
+  stock: {
+    type: Number,
+    default: 1,
+  },
 })
 
 const bidValue = ref('')
 
-// Computed property for authentication status
+// Computed properties
 const isAuthenticated = authStore.isAuthenticated
+
+const isProductAvailable = computed(() => {
+  // Check if product is sold out
+  if (props.stock <= 0) return false
+
+  // Check if product is sold
+  if (props.biddingStatus === 'sold') return false
+
+  // If it's a bidding product and still active, can't purchase directly
+  if (props.isBidding && props.biddingStatus === 'active') return 'bidding-only'
+
+  // If reserved for someone else (we don't know if current user is winner)
+  if (props.biddingStatus === 'reserved') return 'reserved'
+
+  return true
+})
+
+const canAddToCart = computed(() => {
+  return isProductAvailable.value === true && isAuthenticated
+})
+
+const canBid = computed(() => {
+  return props.isBidding && props.biddingStatus === 'active' && isAuthenticated
+})
+
+const productStatusText = computed(() => {
+  if (props.stock <= 0) return 'Rasprodano'
+  if (props.biddingStatus === 'sold') return 'Prodano'
+  if (props.biddingStatus === 'reserved') return 'Rezervirano'
+  if (props.isBidding && props.biddingStatus === 'active') return 'Na licitaciji'
+  if (props.isBidding && props.biddingStatus === 'ended') return 'Licitacija završena'
+  return 'Dostupno'
+})
+
+const statusClass = computed(() => {
+  if (props.stock <= 0 || props.biddingStatus === 'sold') return 'status-unavailable'
+  if (props.biddingStatus === 'reserved') return 'status-reserved'
+  if (props.isBidding && props.biddingStatus === 'active') return 'status-bidding'
+  return 'status-available'
+})
+
+const getCartButtonLabel = computed(() => {
+  if (!isAuthenticated) return 'Prijavite se za kupnju'
+  if (props.stock <= 0) return 'Rasprodano'
+  if (props.biddingStatus === 'sold') return 'Prodano'
+  if (props.biddingStatus === 'reserved') return 'Rezervirano'
+  return 'Dodaj u košaricu'
+})
+
+const getCartButtonIcon = computed(() => {
+  if (!isAuthenticated) return 'pi pi-sign-in'
+  if (props.stock <= 0 || props.biddingStatus === 'sold') return 'pi pi-times'
+  if (props.biddingStatus === 'reserved') return 'pi pi-lock'
+  return 'pi pi-shopping-cart'
+})
 
 function emitBid() {
   if (bidValue.value && Number(bidValue.value) > props.currentPrice) {
@@ -191,13 +284,70 @@ const emit = defineEmits(['add-to-cart', 'place-bid', 'view-product'])
 }
 
 .current-price {
-  font-size: 1.5rem;
-  font-weight: 800;
-  color: #3b82f6;
-  background: linear-gradient(135deg, #3b82f6, #1d4ed8);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--app-primary-color, #2563eb);
+  display: block;
+}
+
+.original-price {
+  font-size: 0.9rem;
+  color: #9ca3af;
+  text-decoration: line-through;
+  margin-left: 0.5rem;
+}
+
+/* Product Status Styles */
+.product-status {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0.75rem 0;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.status-available {
+  background: #ecfdf5;
+  color: #059669;
+}
+
+.status-bidding {
+  background: #fef3c7;
+  color: #d97706;
+}
+
+.status-unavailable {
+  background: #fef2f2;
+  color: #dc2626;
+}
+
+.status-reserved {
+  background: #f3f4f6;
+  color: #6b7280;
+}
+
+/* Bidding Info Styles */
+.bidding-info {
+  display: flex;
+  gap: 1rem;
+  margin: 0.5rem 0;
+  font-size: 0.875rem;
+  color: #6b7280;
+}
+
+.time-remaining,
+.bid-count {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.time-remaining i,
+.bid-count i {
+  font-size: 0.75rem;
 }
 
 .product-actions {

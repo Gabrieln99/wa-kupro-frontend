@@ -63,6 +63,7 @@
           :bid-count="product.bidCount"
           :best-bidder="product.bestBidder"
           :category="product.category"
+          :stock="product.stock"
           @add-to-cart="handleAddToCart(product)"
           @place-bid="handlePlaceBid(product, $event)"
           @view-product="handleViewProduct(product)"
@@ -85,6 +86,7 @@
 import { ref, reactive, computed, onMounted, watch } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
+import { useCartStore } from '@/stores/cart'
 import { productService } from '@/services/api'
 import Navbar from '@/components/Navbar.vue'
 import Footer from '@/components/Footer.vue'
@@ -99,10 +101,11 @@ const props = defineProps({
   bidding: String,
 })
 
-// Router and auth
+// Router and stores
 const router = useRouter()
 const route = useRoute()
 const authStore = useAuthStore()
+const cartStore = useCartStore()
 
 // Reactive data
 const products = ref([])
@@ -317,8 +320,16 @@ const handleAddToCart = (product) => {
     return
   }
 
-  // Add to cart logic here
-  showNotification(`${product.name} je dodan u košaricu`, 'success', 'pi-shopping-cart')
+  try {
+    cartStore.addToCart(product)
+    showNotification(`${product.name} je dodan u košaricu`, 'success', 'pi-shopping-cart')
+  } catch (error) {
+    showNotification(
+      error.message || 'Greška pri dodavanju u košaricu',
+      'error',
+      'pi-exclamation-triangle',
+    )
+  }
 }
 
 const handlePlaceBid = async (product, bidAmount) => {
