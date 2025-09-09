@@ -9,6 +9,10 @@
       <span class="sale-type" :class="product.isBidding ? 'bidding' : 'direct'">
         {{ product.isBidding ? 'Licitacija' : 'Direktna prodaja' }}
       </span>
+      <p v-if="product.userEmail" class="owner-info">
+        <i class="pi pi-user"></i>
+        {{ product.userEmail }}
+      </p>
     </div>
     <div class="product-actions">
       <Button
@@ -105,6 +109,19 @@ defineEmits(['edit-product', 'delete-product'])
 .sale-type.bidding {
   background: #fff3cd;
   color: #856404;
+}
+
+.owner-info {
+  color: #666;
+  font-size: 0.85rem;
+  margin: 5px 0 0 0;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.owner-info i {
+  color: #999;
 }
 
 .product-actions {

@@ -26,6 +26,15 @@
           <AddProductForm @product-added="handleProductAdded" @cancel="activeTab = 'products'" />
         </div>
 
+        <!-- Edit Product -->
+        <div v-if="activeTab === 'edit-product' && editingProduct" class="edit-product-section">
+          <EditProductForm
+            :product="editingProduct"
+            @product-updated="handleProductUpdated"
+            @cancel="cancelEdit"
+          />
+        </div>
+
         <!-- Users Management -->
         <UsersManagement
           v-if="activeTab === 'users'"
@@ -49,6 +58,7 @@ import { useRouter } from 'vue-router'
 import Navbar from '../components/Navbar.vue'
 import Footer from '../components/Footer.vue'
 import AddProductForm from '../components/AddProductForm.vue'
+import EditProductForm from '../components/EditProductForm.vue'
 import AdminTabs from '../components/AdminTabs.vue'
 import ProductsManagement from '../components/ProductsManagement.vue'
 import UsersManagement from '../components/UsersManagement.vue'
@@ -63,6 +73,7 @@ const products = ref([])
 const users = ref([])
 const loading = ref(true)
 const loadingUsers = ref(false)
+const editingProduct = ref(null)
 
 // Check if user is admin (this should be implemented in your auth system)
 if (!authStore.isAuthenticated || authStore.user?.role !== 'admin') {
@@ -179,9 +190,28 @@ const deleteProduct = async (productId) => {
 }
 
 const editProduct = (productId) => {
-  // TODO: Implement product editing functionality
-  console.log('Edit product:', productId)
-  alert('Funkcionalnost uređivanja proizvoda će biti implementirana uskoro')
+  const product = products.value.find((p) => p._id === productId)
+  if (product) {
+    editingProduct.value = product
+    activeTab.value = 'edit-product'
+  }
+}
+
+const handleProductUpdated = (updatedProduct) => {
+  // Update the product in the products array
+  const index = products.value.findIndex((p) => p._id === updatedProduct._id)
+  if (index !== -1) {
+    products.value[index] = updatedProduct
+  }
+
+  // Clear editing state and return to products tab
+  editingProduct.value = null
+  activeTab.value = 'products'
+}
+
+const cancelEdit = () => {
+  editingProduct.value = null
+  activeTab.value = 'products'
 }
 
 // Lifecycle

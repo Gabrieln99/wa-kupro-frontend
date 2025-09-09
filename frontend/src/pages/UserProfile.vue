@@ -111,7 +111,12 @@
                     title="Pogledaj"
                     @click="viewProduct(product._id)"
                   />
-                  <Button icon="pi pi-pencil" class="p-button-sm p-button-outlined" title="Uredi" />
+                  <Button
+                    icon="pi pi-pencil"
+                    class="p-button-sm p-button-outlined"
+                    title="Uredi"
+                    @click="editProduct(product)"
+                  />
                   <Button
                     icon="pi pi-trash"
                     class="p-button-sm p-button-outlined p-button-danger"
@@ -128,6 +133,15 @@
             <AddProductForm
               @product-added="handleProductAdded"
               @cancel="activeTab = 'my-products'"
+            />
+          </div>
+
+          <!-- Edit Product -->
+          <div v-if="activeTab === 'edit-product' && editingProduct" class="edit-product-section">
+            <EditProductForm
+              :product="editingProduct"
+              @product-updated="handleProductUpdated"
+              @cancel="cancelEdit"
             />
           </div>
 
@@ -199,6 +213,7 @@ import { useRouter } from 'vue-router'
 import Navbar from '../components/Navbar.vue'
 import Footer from '../components/Footer.vue'
 import AddProductForm from '../components/AddProductForm.vue'
+import EditProductForm from '../components/EditProductForm.vue'
 import Button from 'primevue/button'
 
 const authStore = useAuthStore()
@@ -219,6 +234,7 @@ const activeTab = ref('my-products')
 const myProducts = ref([])
 const loading = ref(true)
 const userLoading = ref(true)
+const editingProduct = ref(null)
 
 // Computed
 const memberSince = computed(() => {
@@ -270,6 +286,28 @@ const loadMyProducts = async () => {
 
 const handleProductAdded = (newProduct) => {
   myProducts.value.unshift(newProduct)
+  activeTab.value = 'my-products'
+}
+
+const editProduct = (product) => {
+  editingProduct.value = product
+  activeTab.value = 'edit-product'
+}
+
+const handleProductUpdated = (updatedProduct) => {
+  // Update the product in the myProducts array
+  const index = myProducts.value.findIndex((p) => p._id === updatedProduct._id)
+  if (index !== -1) {
+    myProducts.value[index] = updatedProduct
+  }
+
+  // Clear editing state and return to my products tab
+  editingProduct.value = null
+  activeTab.value = 'my-products'
+}
+
+const cancelEdit = () => {
+  editingProduct.value = null
   activeTab.value = 'my-products'
 }
 
