@@ -242,7 +242,18 @@ const handlePlaceBid = async () => {
   }
 
   try {
-    // Place bid logic - replace with actual API call
+    // Prepare bid data with required fields
+    const bidData = {
+      bidAmount: bid,
+      bidder:
+        authStore.user?.name && authStore.user?.surname
+          ? `${authStore.user.name} ${authStore.user.surname}`
+          : authStore.user?.username || 'Korisnik',
+      bidderEmail: authStore.user?.email,
+    }
+
+    console.log('🎯 Placing bid on single product page:', bidData)
+
     const apiUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000/api'
     const response = await fetch(`${apiUrl}/products/${product.value._id}/bid`, {
       method: 'POST',
@@ -250,21 +261,26 @@ const handlePlaceBid = async () => {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${authStore.token}`,
       },
-      body: JSON.stringify({ bidAmount: bid }),
+      body: JSON.stringify(bidData),
     })
 
     if (response.ok) {
-      const updatedProduct = await response.json()
-      product.value.currentPrice = updatedProduct.currentPrice
-      product.value.bestBidder = authStore.user.username
+      const result = await response.json()
+
+      // Update product with new bid information
+      product.value.currentPrice = result.product.currentPrice
+      product.value.bestBidder = result.product.bestBidder
+      product.value.bidCount = result.product.bidCount
+
       bidAmount.value = ''
-      showNotification('Ponuda je uspješno postavljena!', 'success')
+      showNotification(result.message || 'Ponuda je uspješno postavljena!', 'success')
     } else {
-      throw new Error('Failed to place bid')
+      const errorData = await response.json()
+      throw new Error(errorData.message || 'Failed to place bid')
     }
   } catch (error) {
-    console.error('Error placing bid:', error)
-    showNotification('Greška pri postavljanju ponude!', 'error')
+    console.error('❌ Error placing bid:', error)
+    showNotification(error.message || 'Greška pri postavljanju ponude!', 'error')
   }
 }
 

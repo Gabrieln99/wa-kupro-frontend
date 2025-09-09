@@ -140,11 +140,26 @@ const placeBid = async (productId, bidAmount) => {
   }
 
   try {
-    // Place bid logic here
-    console.log('Placing bid:', productId, bidAmount)
-    // You can implement bid functionality here
+    // Prepare bid data with required fields
+    const bidData = {
+      bidAmount: bidAmount,
+      bidder:
+        authStore.user?.name && authStore.user?.surname
+          ? `${authStore.user.name} ${authStore.user.surname}`
+          : authStore.user?.username || 'Korisnik',
+      bidderEmail: authStore.user?.email,
+    }
+
+    console.log('🎯 Placing bid from homepage:', bidData)
+
+    const response = await productService.placeBid(productId, bidData)
+    console.log('✅ Bid placed successfully:', response.data.message)
+
+    // Refresh products to show updated bid info
+    fetchProducts()
   } catch (error) {
-    console.error('Error placing bid:', error)
+    console.error('❌ Homepage bid error:', error.response?.data)
+    // You could add a notification system here like in Products.vue
   }
 }
 </script>

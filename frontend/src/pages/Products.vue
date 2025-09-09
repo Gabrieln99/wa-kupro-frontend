@@ -321,7 +321,7 @@ const handleAddToCart = (product) => {
   showNotification(`${product.name} je dodan u košaricu`, 'success', 'pi-shopping-cart')
 }
 
-const handlePlaceBid = async (product, bidData) => {
+const handlePlaceBid = async (product, bidAmount) => {
   if (!authStore.isAuthenticated) {
     showNotification('Morate se prijaviti za licitiranje', 'error', 'pi-exclamation-triangle')
     router.push('/login')
@@ -329,12 +329,25 @@ const handlePlaceBid = async (product, bidData) => {
   }
 
   try {
+    // Prepare bid data with required fields
+    const bidData = {
+      bidAmount: bidAmount,
+      bidder:
+        authStore.user?.name && authStore.user?.surname
+          ? `${authStore.user.name} ${authStore.user.surname}`
+          : authStore.user?.username || 'Korisnik',
+      bidderEmail: authStore.user?.email,
+    }
+
+    console.log('🎯 Placing bid:', bidData)
+
     const response = await productService.placeBid(product.id, bidData)
     showNotification(response.data.message, 'success', 'pi-check')
 
     // Refresh products to show updated bid info
     fetchProducts()
   } catch (error) {
+    console.error('❌ Bid error:', error.response?.data)
     const errorMessage = error.response?.data?.message || 'Greška pri stavljanju ponude'
     showNotification(errorMessage, 'error', 'pi-exclamation-triangle')
   }
