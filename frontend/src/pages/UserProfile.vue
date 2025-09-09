@@ -271,11 +271,35 @@ const loadMyProducts = async () => {
     const response = await fetch(`${apiUrl}/products`)
     if (response.ok) {
       const allProducts = await response.json()
+
+      // Debug logging
+      console.log('🔍 All products:', allProducts)
+      console.log('👤 Current user:', authStore.user)
+      console.log('📧 User email:', authStore.user?.email)
+      console.log('🆔 User ID:', authStore.user?.id)
+      console.log('🆔 User _id:', authStore.user?._id)
+
       // Filter products by current user (you might want to add user filtering in backend)
-      myProducts.value = allProducts.filter(
-        (product) =>
-          product.userEmail === authStore.user?.email || product.userId === authStore.user?.id,
-      )
+      myProducts.value = allProducts.filter((product) => {
+        const matchesEmail = product.userEmail === authStore.user?.email
+        const matchesId = product.userId === authStore.user?.id
+        const matches_Id = product.userId === authStore.user?._id
+
+        console.log(`🔄 Product "${product.name}":`)
+        console.log(`   Product userEmail: "${product.userEmail}"`)
+        console.log(`   Product userId: "${product.userId}"`)
+        console.log(`   User email: "${authStore.user?.email}"`)
+        console.log(`   User id: "${authStore.user?.id}"`)
+        console.log(`   User _id: "${authStore.user?._id}"`)
+        console.log(`   Matches email: ${matchesEmail}`)
+        console.log(`   Matches id: ${matchesId}`)
+        console.log(`   Matches _id: ${matches_Id}`)
+        console.log(`   Overall match: ${matchesEmail || matchesId || matches_Id}`)
+
+        return matchesEmail || matchesId || matches_Id
+      })
+
+      console.log('✅ My products:', myProducts.value)
     }
   } catch (error) {
     console.error('Error loading my products:', error)

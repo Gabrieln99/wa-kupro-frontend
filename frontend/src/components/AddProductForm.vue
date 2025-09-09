@@ -289,6 +289,13 @@ const handleSubmit = async () => {
       userEmail: authStore.user?.email,
     }
 
+    // Debug logging
+    console.log('🆔 Creating product with user data:')
+    console.log('   User ID:', authStore.user?.id)
+    console.log('   User _id:', authStore.user?._id)
+    console.log('   User email:', authStore.user?.email)
+    console.log('   Product data:', productData)
+
     // Send to backend
     const apiUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000/api'
     const response = await fetch(`${apiUrl}/products`, {
@@ -302,6 +309,7 @@ const handleSubmit = async () => {
 
     if (response.ok) {
       const newProduct = await response.json()
+      console.log('✅ Product created:', newProduct)
       showNotification('Proizvod je uspješno dodan!', 'success')
       resetForm()
       emit('product-added', newProduct)

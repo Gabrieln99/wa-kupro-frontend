@@ -77,75 +77,50 @@ const items = computed(() => {
       command: () => router.push('/'),
     },
     {
-      label: 'Proizvodi',
+      label: 'Svi proizvodi',
       icon: 'pi pi-shopping-bag',
+      command: () => router.push('/products'),
+    },
+    {
+      label: 'Kategorije',
+      icon: 'pi pi-tags',
       items: [
         {
-          label: 'Svi proizvodi',
-          icon: 'pi pi-list',
-          command: () => router.push('/products'),
+          label: 'Elektronika',
+          command: () => router.push('/products?category=Elektronika'),
         },
         {
-          label: 'Aktivne licitacije',
-          icon: 'pi pi-clock',
-          command: () => router.push('/products?bidding=active'),
+          label: 'Namještaj',
+          command: () => router.push('/products?category=Namještaj'),
         },
-        { separator: true },
         {
-          label: 'Kategorije',
-          icon: 'pi pi-tags',
-          items: [
-            {
-              label: 'Elektronika',
-              command: () => router.push('/products?category=Elektronika'),
-            },
-            {
-              label: 'Namještaj',
-              command: () => router.push('/products?category=Namještaj'),
-            },
-            {
-              label: 'Odjeća',
-              command: () => router.push('/products?category=Odjeća'),
-            },
-            {
-              label: 'Knjige',
-              command: () => router.push('/products?category=Knjige'),
-            },
-            {
-              label: 'Sport',
-              command: () => router.push('/products?category=Sport'),
-            },
-            {
-              label: 'Igračke',
-              command: () => router.push('/products?category=Igračke'),
-            },
-            {
-              label: 'Antikviteti',
-              command: () => router.push('/products?category=Antikviteti'),
-            },
-            {
-              label: 'Satovi',
-              command: () => router.push('/products?category=Satovi'),
-            },
-            {
-              label: 'Računala',
-              command: () => router.push('/products?category=Računala'),
-            },
-            {
-              label: 'Glazbala',
-              command: () => router.push('/products?category=Glazbala'),
-            },
-            {
-              label: 'Ostalo',
-              command: () => router.push('/products?category=Ostalo'),
-            },
-          ],
+          label: 'Odjeća',
+          command: () => router.push('/products?category=Odjeća'),
+        },
+        {
+          label: 'Igračke',
+          command: () => router.push('/products?category=Igračke'),
+        },
+        {
+          label: 'Automobili',
+          command: () => router.push('/products?category=Automobili'),
+        },
+        {
+          label: 'Računala',
+          command: () => router.push('/products?category=Računala'),
+        },
+        {
+          label: 'Glazbala',
+          command: () => router.push('/products?category=Glazbala'),
+        },
+        {
+          label: 'Ostalo',
+          command: () => router.push('/products?category=Ostalo'),
         },
       ],
     },
   ]
 
-  // No additional menu items for authenticated users - they use the user button instead
   return base
 })
 
@@ -369,7 +344,7 @@ onUnmounted(() => {
 /* Media query for mobile responsiveness */
 @media (max-width: 768px) {
   .desktop-nav {
-    display: none;
+    display: none !important;
   }
 
   .mobile-nav {
@@ -377,44 +352,121 @@ onUnmounted(() => {
   }
 }
 
-/* Desktop Styles */
-.custom-menubar,
-.p-menubar {
-  background: var(--app-surface-color, #fff);
-  border-radius: 0;
-  box-shadow: 0 2px 8px var(--app-shadow, rgba(33, 150, 243, 0.08));
-  border: none;
-  padding-right: 2rem;
-  color: var(--app-text-color, #1976d2);
-  transition:
-    background-color 0.3s ease,
-    color 0.3s ease;
+/* Desktop Styles - Only apply on desktop */
+@media (min-width: 769px) {
+  .custom-menubar,
+  .p-menubar {
+    background: var(--app-surface-color, #fff);
+    border-radius: 0;
+    box-shadow: 0 2px 8px var(--app-shadow, rgba(33, 150, 243, 0.08));
+    border: none;
+    padding: 0.3rem 1.5rem;
+    color: var(--app-text-color, #1976d2);
+    transition:
+      background-color 0.3s ease,
+      color 0.3s ease;
+    height: 60px !important;
+    min-height: 60px !important;
+    max-height: 60px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+  }
+
+  /* Menubar content layout */
+  .p-menubar-root-list,
+  .p-menubar .p-menubar-root-list {
+    display: flex !important;
+    align-items: center !important;
+    flex-wrap: nowrap !important;
+    gap: 0.8rem !important;
+    height: 100% !important;
+    white-space: nowrap !important;
+  }
+
+  /* Start section (logo) */
+  .p-menubar-start {
+    display: flex !important;
+    align-items: center !important;
+    flex-shrink: 0 !important;
+  }
+
+  /* End section (auth buttons) */
+  .p-menubar-end {
+    display: flex !important;
+    align-items: center !important;
+    flex-shrink: 0 !important;
+    margin-left: auto !important;
+  }
+
+  /* Hide hamburger button */
+  .p-menubar-button {
+    display: none !important;
+  }
+
+  .p-menubar .p-menuitem {
+    flex-shrink: 0 !important;
+    display: inline-flex !important;
+  }
+
+  .p-menubar .p-menuitem-content {
+    padding: 0.4rem 0.8rem !important;
+    display: flex !important;
+    align-items: center !important;
+  }
+
+  .p-menubar .p-menuitem-link {
+    font-size: 0.9rem !important;
+    white-space: nowrap !important;
+    display: flex !important;
+    align-items: center !important;
+  }
+
+  .p-menubar .p-menuitem-icon {
+    margin-right: 0.4rem !important;
+    font-size: 0.85rem !important;
+  }
+
+  /* Auth buttons container */
+  .auth-buttons {
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.5rem !important;
+    flex-shrink: 0 !important;
+  }
+
+  .auth-buttons .p-button {
+    font-size: 0.85rem !important;
+    padding: 0.4rem 0.8rem !important;
+    white-space: nowrap !important;
+  }
+
+  .logo:hover {
+    color: #1565c0;
+  }
 }
 
+/* Logo styles for both desktop and mobile */
 .logo {
-  font-size: 1.7rem;
+  font-size: 1.5rem !important;
   font-weight: bold;
   color: #1976d2;
-  letter-spacing: 2px;
+  letter-spacing: 1px;
   display: flex;
   align-items: center;
-  padding-right: 2rem;
+  padding-right: 1.5rem !important;
   font-family: 'Segoe UI', Arial, sans-serif;
   user-select: none;
   cursor: pointer;
   transition: color 0.2s ease;
+  flex-shrink: 0;
 }
 
 .logo:hover {
   color: #1565c0;
 }
 
-.auth-buttons {
-  display: flex;
-  gap: 1rem;
-  margin-left: 2rem;
-  align-items: center;
-}
+/* General button styles for both desktop and mobile */
 
 .blue-btn {
   color: #1976d2 !important;
