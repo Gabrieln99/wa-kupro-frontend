@@ -216,6 +216,12 @@ const fetchProducts = async (reset = true) => {
         ...product,
         id: product._id || product.id,
       }))
+
+      // Debug logging for bidding products
+      console.log(
+        '🎯 Products with bidding:',
+        products.value.filter((p) => p.isBidding || p.biddingEnabled),
+      )
     } else {
       const newProducts = productsData.map((product) => ({
         ...product,

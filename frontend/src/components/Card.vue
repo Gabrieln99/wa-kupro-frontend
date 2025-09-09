@@ -129,10 +129,26 @@ const isProductAvailable = computed(() => {
 })
 
 const canAddToCart = computed(() => {
+  // Debug logging
+  console.log('🛒 Cart access check:', {
+    name: props.name,
+    isProductAvailable: isProductAvailable.value,
+    isAuthenticated: isAuthenticated,
+    userRole: authStore.role,
+  })
+
   return isProductAvailable.value === true && isAuthenticated
 })
 
 const canBid = computed(() => {
+  // Debug logging
+  console.log('🎯 Card bid check:', {
+    name: props.name,
+    isBidding: props.isBidding,
+    biddingStatus: props.biddingStatus,
+    isAuthenticated: isAuthenticated,
+  })
+
   return props.isBidding && props.biddingStatus === 'active' && isAuthenticated
 })
 
