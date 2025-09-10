@@ -93,16 +93,28 @@
 
             <div v-else class="products-grid">
               <div v-for="product in myProducts" :key="product._id" class="product-card">
-                <img :src="product.image" :alt="product.name" class="product-image" />
+                <img
+                  :src="product.image"
+                  :alt="product.name"
+                  class="product-image"
+                  @error="handleImageError"
+                  @load="handleImageLoad"
+                />
                 <div class="product-info">
-                  <h4>{{ product.name }}</h4>
-                  <p class="category">{{ product.category }}</p>
-                  <p class="price">{{ product.currentPrice }} €</p>
-                  <p class="stock">Skladište: {{ product.stock }} kom</p>
+                  <h4>{{ product.name || 'Naziv nije dostupan' }}</h4>
+                  <p class="category">{{ product.category || 'N/A' }}</p>
+                  <p class="price">{{ product.currentPrice || 0 }} €</p>
+                  <p class="stock">Skladište: {{ product.stock || 0 }} kom</p>
                   <span class="sale-type" :class="product.isBidding ? 'bidding' : 'direct'">
                     {{ product.isBidding ? 'Licitacija' : 'Direktna prodaja' }}
                   </span>
                   <p class="created-date">Objavljeno: {{ formatDate(product.createdAt) }}</p>
+                  <!-- Debug info -->
+                  <div class="debug-info" style="font-size: 10px; color: #666; margin-top: 5px">
+                    <div>Image: {{ product.image }}</div>
+                    <div>CreatedAt: {{ product.createdAt }}</div>
+                    <div>Name: "{{ product.name }}"</div>
+                  </div>
                 </div>
                 <div class="product-actions">
                   <Button
@@ -270,16 +282,20 @@ const loadMyProducts = async () => {
     const apiUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000/api'
     const response = await fetch(`${apiUrl}/products`)
     if (response.ok) {
-      const allProducts = await response.json()
+      const responseData = await response.json()
 
       // Debug logging
-      console.log('🔍 All products:', allProducts)
+      console.log('🔍 Response data:', responseData)
       console.log('👤 Current user:', authStore.user)
       console.log('📧 User email:', authStore.user?.email)
       console.log('🆔 User ID:', authStore.user?.id)
       console.log('🆔 User _id:', authStore.user?._id)
 
-      // Filter products by current user (you might want to add user filtering in backend)
+      // Extract products array from response
+      const allProducts = responseData.products || responseData || []
+      console.log('📦 Products array:', allProducts)
+
+      // Filter products by current user
       myProducts.value = allProducts.filter((product) => {
         const matchesEmail = product.userEmail === authStore.user?.email
         const matchesId = product.userId === authStore.user?.id
@@ -365,7 +381,25 @@ const deleteMyProduct = async (productId) => {
 }
 
 const formatDate = (dateString) => {
-  return new Date(dateString).toLocaleDateString('hr-HR')
+  if (!dateString) return 'Invalid Date'
+  try {
+    const date = new Date(dateString)
+    if (isNaN(date.getTime())) return 'Invalid Date'
+    return date.toLocaleDateString('hr-HR')
+  } catch (error) {
+    console.error('Error formatting date:', error)
+    return 'Invalid Date'
+  }
+}
+
+const handleImageError = (event) => {
+  console.error('Image failed to load:', event.target.src)
+  event.target.src =
+    'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDMwMCAyMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIzMDAiIGhlaWdodD0iMjAwIiBmaWxsPSIjZjNmNGY2Ii8+CjxwYXRoIGQ9Ik0xMjUgNzVIMTc1VjEyNUgxMjVWNzVaIiBmaWxsPSIjOWNhM2FmIi8+CjxwYXRoIGQ9Ik0xNDAgOTBIMTYwVjExMEgxNDBWOTBaIiBmaWxsPSIjZjNmNGY2Ii8+Cjx0ZXh0IHg9IjE1MCIgeT0iMTQ1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSIjNmI3MjgwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTIiPk5lbWEgc2xpa2U8L3RleHQ+Cjwvc3ZnPgo='
+}
+
+const handleImageLoad = (event) => {
+  console.log('Image loaded successfully:', event.target.src)
 }
 
 const logout = () => {
