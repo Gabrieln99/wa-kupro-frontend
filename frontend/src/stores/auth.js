@@ -90,7 +90,14 @@ export const useAuthStore = defineStore('auth', {
     async logout() {
       try {
         console.log('🚪 Logging out user:', this.user)
+        // Try to call the backend logout endpoint
         await userService.logout()
+        console.log('✅ Backend logout successful')
+      } catch (error) {
+        console.error('❌ Backend logout error (continuing with local logout):', error)
+        // Continue with local logout even if backend fails
+      } finally {
+        // Always clear local state regardless of backend response
         this.token = null
         this.user = null
         this.role = null
@@ -98,8 +105,6 @@ export const useAuthStore = defineStore('auth', {
         localStorage.removeItem('user')
         localStorage.removeItem('role')
         console.log('✅ Logout successful - User session cleared')
-      } catch (error) {
-        console.error('❌ Logout error:', error)
       }
     },
 

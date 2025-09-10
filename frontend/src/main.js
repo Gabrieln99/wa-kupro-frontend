@@ -22,7 +22,7 @@ app.use(PrimeVue, {
     },
   },
   ripple: true,
-  inputStyle: 'filled',
+  inputStyle: 'outlined',
 })
 app.use(createPinia())
 app.use(ToastService)

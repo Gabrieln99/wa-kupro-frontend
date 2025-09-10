@@ -35,6 +35,173 @@ body {
     --app-card-bg: #1f2937;
     --app-section-bg: #111827;
   }
+
+  /* Maximum specificity for ALL input elements */
+  html body * input,
+  html body * textarea,
+  html body * select,
+  html body * .p-inputtext,
+  html body * .p-password input,
+  html body * .styled-input,
+  html body * .styled-password input,
+  html body * .styled-password .p-inputtext,
+  html body * .p-password-input {
+    background-color: #1f2937 !important;
+    background: #1f2937 !important;
+    border-color: #374151 !important;
+    color: #f9fafb !important;
+    -webkit-text-fill-color: #f9fafb !important;
+    caret-color: #f9fafb !important;
+  }
+
+  /* Maximum specificity for hover states */
+  html body * input:hover,
+  html body * textarea:hover,
+  html body * .p-inputtext:hover,
+  html body * .styled-input:hover,
+  html body * .styled-password input:hover,
+  html body * .p-password-input:hover {
+    background-color: #374151 !important;
+    background: #374151 !important;
+    border-color: #4b5563 !important;
+    color: #f9fafb !important;
+    -webkit-text-fill-color: #f9fafb !important;
+  }
+
+  /* Maximum specificity for focus states */
+  html body * input:focus,
+  html body * textarea:focus,
+  html body * .p-inputtext:focus,
+  html body * .styled-input:focus,
+  html body * .styled-password input:focus,
+  html body * .p-password-input:focus {
+    background-color: #1f2937 !important;
+    background: #1f2937 !important;
+    border-color: #3b82f6 !important;
+    color: #f9fafb !important;
+    -webkit-text-fill-color: #f9fafb !important;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2) !important;
+  }
+
+  /* High specificity form input styling */
+  body input,
+  body textarea,
+  body select,
+  body .p-inputtext,
+  body .p-password input,
+  body .p-dropdown .p-inputtext,
+  body .p-multiselect .p-inputtext,
+  body .p-calendar input,
+  body .p-inputnumber input {
+    background-color: var(--app-surface-color) !important;
+    border-color: var(--app-border-color) !important;
+    color: var(--app-text-color) !important;
+  }
+
+  /* Force text color in all input types */
+  body input[type='text'],
+  body input[type='email'],
+  body input[type='password'],
+  body input[type='number'],
+  body input[type='search'],
+  body input[type='tel'],
+  body input[type='url'] {
+    color: var(--app-text-color) !important;
+    background-color: var(--app-surface-color) !important;
+    border-color: var(--app-border-color) !important;
+  }
+
+  /* Ultra-specific targeting for login form inputs */
+  body .login-card input,
+  body .login-card .p-inputtext,
+  body .login-card .p-password input,
+  body .login-card .styled-input,
+  body .login-card .styled-password input,
+  body .styled-input.p-inputtext,
+  body .styled-password .p-inputtext,
+  body .p-component.p-inputtext,
+  body .p-password .p-component.p-inputtext {
+    background-color: #1f2937 !important;
+    color: #f9fafb !important;
+    border-color: #374151 !important;
+    -webkit-text-fill-color: #f9fafb !important;
+  }
+
+  /* Override LoginForm specific styling */
+  body .login-card .styled-input,
+  body .login-card .styled-password input,
+  body .login-card .styled-password .p-inputtext {
+    background: #1f2937 !important;
+    color: #f9fafb !important;
+    border-color: #374151 !important;
+    -webkit-text-fill-color: #f9fafb !important;
+  }
+
+  /* Override LoginForm hover states */
+  body .login-card .styled-input:hover,
+  body .login-card .styled-password input:hover,
+  body .login-card .styled-password .p-inputtext:hover,
+  body .login-card .styled-password :deep(.p-password-input):hover {
+    background: #374151 !important;
+    color: #f9fafb !important;
+    border-color: #4b5563 !important;
+    -webkit-text-fill-color: #f9fafb !important;
+  }
+
+  /* Override LoginForm focus states */
+  body .login-card .styled-input:focus,
+  body .login-card .styled-password input:focus,
+  body .login-card .styled-password .p-inputtext:focus,
+  body .login-card .styled-password :deep(.p-password-input):focus {
+    background: #1f2937 !important;
+    color: #f9fafb !important;
+    border-color: #3b82f6 !important;
+    -webkit-text-fill-color: #f9fafb !important;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2) !important;
+  }
+
+  /* Override error states */
+  body .login-card .input-error,
+  body .login-card .styled-input.input-error {
+    background: #1f2937 !important;
+    color: #f9fafb !important;
+    border-color: #ef4444 !important;
+    -webkit-text-fill-color: #f9fafb !important;
+  }
+
+  /* Login form labels */
+  body .login-card .input-label {
+    color: #f9fafb !important;
+  }
+
+  /* Login card background */
+  body .login-card {
+    background: #1f2937 !important;
+    border-color: #374151 !important;
+  }
+
+  body .login-card .form-content {
+    background: #1f2937 !important;
+  }
+
+  /* Target any input inside forms */
+  body form input,
+  body form .p-inputtext,
+  body form .p-password input {
+    background-color: #1f2937 !important;
+    color: #f9fafb !important;
+    border-color: #374151 !important;
+    -webkit-text-fill-color: #f9fafb !important;
+  }
+
+  /* Autofill styling */
+  body input:-webkit-autofill,
+  body input:-webkit-autofill:hover,
+  body input:-webkit-autofill:focus {
+    -webkit-text-fill-color: var(--app-text-color) !important;
+    -webkit-box-shadow: 0 0 0 1000px var(--app-surface-color) inset !important;
+    transition: background-color 5000s ease-in-out 0s;
+  }
 }
 
 /* Global dark mode component styles */
@@ -84,6 +251,95 @@ body {
   select {
     background-color: var(--app-surface-color) !important;
     border-color: var(--app-border-color) !important;
+    color: var(--app-text-color) !important;
+  }
+
+  /* Input placeholders */
+  input::placeholder,
+  textarea::placeholder {
+    color: var(--app-text-secondary) !important;
+    opacity: 0.7;
+  }
+
+  /* Specific input types */
+  input[type='text'],
+  input[type='email'],
+  input[type='password'],
+  input[type='number'],
+  input[type='search'],
+  input[type='tel'],
+  input[type='url'] {
+    background-color: var(--app-surface-color) !important;
+    border-color: var(--app-border-color) !important;
+    color: var(--app-text-color) !important;
+  }
+
+  /* PrimeVue Input components */
+  .p-inputtext,
+  .p-password input,
+  .p-dropdown,
+  .p-multiselect,
+  .p-calendar input,
+  .p-inputnumber input {
+    background-color: var(--app-surface-color) !important;
+    border-color: var(--app-border-color) !important;
+    color: var(--app-text-color) !important;
+  }
+
+  /* PrimeVue specific component styling with higher specificity */
+  body .p-component.p-inputtext,
+  body .p-component.p-password .p-inputtext,
+  body .p-password .p-component.p-inputtext,
+  body .p-dropdown .p-component.p-inputtext,
+  body .p-calendar .p-component.p-inputtext,
+  body .p-inputnumber .p-component.p-inputtext {
+    background-color: var(--app-surface-color) !important;
+    border-color: var(--app-border-color) !important;
+    color: var(--app-text-color) !important;
+  }
+
+  /* Styled input classes used in forms */
+  body .styled-input,
+  body .styled-input input,
+  body .styled-password input,
+  body .styled-password .p-inputtext {
+    background-color: var(--app-surface-color) !important;
+    border-color: var(--app-border-color) !important;
+    color: var(--app-text-color) !important;
+  }
+
+  /* PrimeVue Input focus states */
+  .p-inputtext:focus,
+  .p-password input:focus,
+  .p-dropdown:focus,
+  .p-multiselect:focus,
+  .p-calendar input:focus,
+  .p-inputnumber input:focus {
+    border-color: #3b82f6 !important;
+    box-shadow: 0 0 0 1px #3b82f6 !important;
+  }
+
+  /* Bid input specific styling */
+  .bid-input {
+    background-color: var(--app-surface-color) !important;
+    border-color: var(--app-border-color) !important;
+    color: var(--app-text-color) !important;
+  }
+
+  .bid-input::placeholder {
+    color: var(--app-text-secondary) !important;
+    opacity: 0.7;
+  }
+
+  /* Search input styling */
+  .search-input {
+    background-color: var(--app-surface-color) !important;
+    border-color: var(--app-border-color) !important;
+    color: var(--app-text-color) !important;
+  }
+
+  /* Form labels */
+  label {
     color: var(--app-text-color) !important;
   }
 
@@ -144,5 +400,146 @@ body {
   .modal-content {
     background-color: var(--app-card-bg) !important;
     color: var(--app-text-color) !important;
+  }
+
+  /* Dropdown panels */
+  .p-dropdown-panel,
+  .p-multiselect-panel,
+  .p-calendar-panel {
+    background-color: var(--app-surface-color) !important;
+    border-color: var(--app-border-color) !important;
+    color: var(--app-text-color) !important;
+  }
+
+  /* Dropdown items */
+  .p-dropdown-item,
+  .p-multiselect-item {
+    color: var(--app-text-color) !important;
+  }
+
+  .p-dropdown-item:hover,
+  .p-multiselect-item:hover {
+    background-color: var(--app-surface-secondary) !important;
+  }
+
+  /* Button styling for dark mode */
+  .p-button {
+    border-color: var(--app-border-color) !important;
+  }
+
+  /* Notification/Toast styling */
+  .p-toast .p-toast-message {
+    background-color: var(--app-surface-color) !important;
+    border-color: var(--app-border-color) !important;
+    color: var(--app-text-color) !important;
+  }
+
+  /* Table styling */
+  .p-datatable {
+    background-color: var(--app-card-bg) !important;
+    color: var(--app-text-color) !important;
+  }
+
+  .p-datatable .p-datatable-thead > tr > th {
+    background-color: var(--app-surface-secondary) !important;
+    border-color: var(--app-border-color) !important;
+    color: var(--app-text-color) !important;
+  }
+
+  .p-datatable .p-datatable-tbody > tr > td {
+    border-color: var(--app-border-color) !important;
+    color: var(--app-text-color) !important;
+  }
+
+  /* Menu components */
+  .p-menubar {
+    background-color: var(--app-surface-color) !important;
+    border-color: var(--app-border-color) !important;
+  }
+
+  .p-menubar .p-menuitem-link {
+    color: var(--app-text-color) !important;
+  }
+
+  .p-menubar .p-menuitem-link:hover {
+    background-color: var(--app-surface-secondary) !important;
+  }
+}
+
+/* Alternative class-based dark mode for components that need manual control */
+.dark-mode-text-input,
+.dark-mode-text-input input,
+.dark-mode-text-input .p-inputtext {
+  background-color: #1f2937 !important;
+  border-color: #374151 !important;
+  color: #f9fafb !important;
+}
+
+.dark-mode-text-input input::placeholder,
+.dark-mode-text-input .p-inputtext::placeholder {
+  color: #d1d5db !important;
+  opacity: 0.7;
+}
+
+/* Force styles for webkit browsers */
+@media (prefers-color-scheme: dark) {
+  input:focus,
+  textarea:focus,
+  select:focus {
+    outline-color: #3b82f6 !important;
+  }
+
+  /* Additional global input styling with maximum specificity */
+  html body input,
+  html body textarea,
+  html body select,
+  html body .p-inputtext,
+  html body .p-password input {
+    background-color: #1f2937 !important;
+    color: #f9fafb !important;
+    border-color: #374151 !important;
+    caret-color: #f9fafb !important;
+  }
+
+  /* Ensure placeholder text is visible */
+  html body input::placeholder,
+  html body textarea::placeholder,
+  html body .p-inputtext::placeholder {
+    color: #9ca3af !important;
+    opacity: 0.8;
+  }
+
+  /* Target PrimeVue components specifically */
+  html body .p-component input,
+  html body .p-component .p-inputtext,
+  html body .p-password .p-component {
+    background-color: #1f2937 !important;
+    color: #f9fafb !important;
+    border-color: #374151 !important;
+  }
+
+  /* Deep selectors for password component */
+  html body .login-card .p-password-input,
+  html body .styled-password .p-password-input {
+    background: #1f2937 !important;
+    color: #f9fafb !important;
+    border-color: #374151 !important;
+    -webkit-text-fill-color: #f9fafb !important;
+  }
+
+  html body .login-card .p-password-input:hover,
+  html body .styled-password .p-password-input:hover {
+    background: #374151 !important;
+    color: #f9fafb !important;
+    border-color: #4b5563 !important;
+    -webkit-text-fill-color: #f9fafb !important;
+  }
+
+  html body .login-card .p-password-input:focus,
+  html body .styled-password .p-password-input:focus {
+    background: #1f2937 !important;
+    color: #f9fafb !important;
+    border-color: #3b82f6 !important;
+    -webkit-text-fill-color: #f9fafb !important;
   }
 }

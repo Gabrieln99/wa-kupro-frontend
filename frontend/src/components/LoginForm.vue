@@ -495,4 +495,59 @@ const handleLogin = async () => {
     gap: 0.75rem;
   }
 }
+
+/* Dark mode overrides - highest specificity */
+@media (prefers-color-scheme: dark) {
+  .login-card {
+    background: #1f2937 !important;
+    border-color: #374151 !important;
+  }
+
+  .form-content {
+    background: #1f2937 !important;
+  }
+
+  .input-label {
+    color: #f9fafb !important;
+  }
+
+  .styled-input,
+  .styled-password :deep(.p-password-input) {
+    background: #1f2937 !important;
+    color: #f9fafb !important;
+    border-color: #374151 !important;
+    -webkit-text-fill-color: #f9fafb !important;
+  }
+
+  .styled-input:hover,
+  .styled-password :deep(.p-password-input):hover {
+    background: #374151 !important;
+    color: #f9fafb !important;
+    border-color: #4b5563 !important;
+    -webkit-text-fill-color: #f9fafb !important;
+  }
+
+  .styled-input:focus,
+  .styled-password :deep(.p-password-input):focus {
+    background: #1f2937 !important;
+    color: #f9fafb !important;
+    border-color: #3b82f6 !important;
+    -webkit-text-fill-color: #f9fafb !important;
+  }
+
+  .input-error {
+    background: #1f2937 !important;
+    color: #f9fafb !important;
+    border-color: #ef4444 !important;
+    -webkit-text-fill-color: #f9fafb !important;
+  }
+
+  .remember-label {
+    color: #f9fafb !important;
+  }
+
+  .input-icon {
+    color: #9ca3af !important;
+  }
+}
 </style>

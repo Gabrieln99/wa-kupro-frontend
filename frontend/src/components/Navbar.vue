@@ -34,9 +34,17 @@ function navigateAndClose(path) {
 function handleMobileLogout() {
   console.log('🚪 Navbar: Mobile logout triggered')
   console.log('👤 Current user before logout:', authStore.user)
-  authStore.logout()
-  router.push('/')
-  closeMobileMenu()
+  authStore.logout().then(() => {
+    console.log('✅ Navbar: Mobile logout completed, redirecting to home')
+    router.push('/')
+    closeMobileMenu()
+  }).catch((error) => {
+    console.error('❌ Navbar: Mobile logout error:', error)
+    // Even if logout API fails, clear local state and redirect
+    authStore.clearAuthState()
+    router.push('/')
+    closeMobileMenu()
+  })
 }
 
 // Watch for auth changes and log current user
@@ -127,8 +135,15 @@ const items = computed(() => {
 function handleLogout() {
   console.log('🚪 Navbar: Logout triggered')
   console.log('👤 Current user before logout:', authStore.user)
-  authStore.logout()
-  router.push('/')
+  authStore.logout().then(() => {
+    console.log('✅ Navbar: Logout completed, redirecting to home')
+    router.push('/')
+  }).catch((error) => {
+    console.error('❌ Navbar: Logout error:', error)
+    // Even if logout API fails, clear local state and redirect
+    authStore.clearAuthState()
+    router.push('/')
+  })
 }
 
 // Cleanup function to restore body scroll on component unmount
