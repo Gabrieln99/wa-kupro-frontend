@@ -230,7 +230,7 @@ const minDateTime = computed(() => {
 })
 
 const isFormValid = computed(() => {
-  const basicValid = (
+  const basicValid =
     formData.name.trim() &&
     formData.category &&
     formData.image.trim() &&
@@ -238,12 +238,11 @@ const isFormValid = computed(() => {
     formData.stock > 0 &&
     formData.description.trim().length >= 10 &&
     formData.description.length <= 500
-  )
-  
+
   if (formData.isBidding) {
     return basicValid && formData.biddingEndTime
   }
-  
+
   return basicValid
 })
 
@@ -307,7 +306,7 @@ const validateForm = () => {
       const endTime = new Date(formData.biddingEndTime)
       const now = new Date()
       const minTime = new Date(now.getTime() + 60 * 60 * 1000) // 1 hour from now
-      
+
       if (endTime <= now) {
         errors.biddingEndTime = 'Završetak licitacije mora biti u budućnosti'
         isValid = false
@@ -687,14 +686,14 @@ const showNotification = (message, type) => {
     -webkit-text-fill-color: #f9fafb !important;
   }
 
-  input[type="datetime-local"] {
+  input[type='datetime-local'] {
     background: #1f2937 !important;
     color: #f9fafb !important;
     border-color: #374151 !important;
     -webkit-text-fill-color: #f9fafb !important;
   }
 
-  input[type="datetime-local"]::-webkit-calendar-picker-indicator {
+  input[type='datetime-local']::-webkit-calendar-picker-indicator {
     filter: invert(1);
   }
 
