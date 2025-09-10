@@ -501,6 +501,28 @@ body {
     caret-color: #f9fafb !important;
   }
 
+  /* All hover states */
+  html body input:hover,
+  html body textarea:hover,
+  html body select:hover,
+  html body .p-inputtext:hover,
+  html body .p-password input:hover {
+    background-color: #374151 !important;
+    color: #f9fafb !important;
+    border-color: #4b5563 !important;
+  }
+
+  /* All focus states */
+  html body input:focus,
+  html body textarea:focus,
+  html body select:focus,
+  html body .p-inputtext:focus,
+  html body .p-password input:focus {
+    background-color: #1f2937 !important;
+    color: #f9fafb !important;
+    border-color: #3b82f6 !important;
+  }
+
   /* Ensure placeholder text is visible */
   html body input::placeholder,
   html body textarea::placeholder,

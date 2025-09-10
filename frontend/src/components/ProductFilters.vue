@@ -649,4 +649,111 @@ onMounted(() => {
     justify-content: center;
   }
 }
+
+/* Dark mode overrides */
+@media (prefers-color-scheme: dark) {
+  .search-filters {
+    background: #1f2937 !important;
+    border-color: #374151 !important;
+  }
+
+  .search-section {
+    background: #1f2937 !important;
+  }
+
+  .search-input {
+    background: #1f2937 !important;
+    color: #f9fafb !important;
+    border-color: #374151 !important;
+    -webkit-text-fill-color: #f9fafb !important;
+  }
+
+  .search-input:hover {
+    background: #374151 !important;
+    color: #f9fafb !important;
+    border-color: #4b5563 !important;
+    -webkit-text-fill-color: #f9fafb !important;
+  }
+
+  .search-input:focus {
+    background: #1f2937 !important;
+    color: #f9fafb !important;
+    border-color: #3b82f6 !important;
+    -webkit-text-fill-color: #f9fafb !important;
+  }
+
+  .search-input::placeholder {
+    color: #9ca3af !important;
+  }
+
+  .search-icon {
+    color: #9ca3af !important;
+  }
+
+  .filter-toggle-btn {
+    background: #374151 !important;
+    color: #f9fafb !important;
+    border-color: #4b5563 !important;
+  }
+
+  .filter-toggle-btn:hover,
+  .filter-toggle-btn.active {
+    background: #3b82f6 !important;
+    color: white !important;
+    border-color: #3b82f6 !important;
+  }
+
+  .filter-section h4,
+  .filter-section label {
+    color: #f9fafb !important;
+  }
+
+  .filter-grid {
+    background: #1f2937 !important;
+  }
+
+  .filter-section {
+    background: #374151 !important;
+    border-color: #4b5563 !important;
+  }
+
+  .category-options button,
+  .sort-options button {
+    background: #1f2937 !important;
+    color: #f9fafb !important;
+    border-color: #374151 !important;
+  }
+
+  .category-options button:hover,
+  .sort-options button:hover {
+    background: #374151 !important;
+    color: #f9fafb !important;
+  }
+
+  .category-options button.active,
+  .sort-options button.active {
+    background: #3b82f6 !important;
+    color: white !important;
+  }
+
+  .price-input {
+    background: #1f2937 !important;
+    color: #f9fafb !important;
+    border-color: #374151 !important;
+    -webkit-text-fill-color: #f9fafb !important;
+  }
+
+  .price-input:focus {
+    border-color: #3b82f6 !important;
+  }
+
+  .filter-tag {
+    background: #374151 !important;
+    color: #f9fafb !important;
+  }
+
+  .active-filters-label {
+    color: #f9fafb !important;
+  }
+}
 </style>

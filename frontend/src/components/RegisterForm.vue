@@ -775,4 +775,71 @@ const handleRegister = async () => {
     padding: 1rem;
   }
 }
+
+/* Dark mode overrides - highest specificity */
+@media (prefers-color-scheme: dark) {
+  .register-card {
+    background: #1f2937 !important;
+    border-color: #374151 !important;
+  }
+
+  .form-content {
+    background: #1f2937 !important;
+  }
+
+  .input-label {
+    color: #f9fafb !important;
+  }
+
+  .styled-input,
+  .styled-password :deep(.p-password-input),
+  .styled-textarea {
+    background: #1f2937 !important;
+    color: #f9fafb !important;
+    border-color: #374151 !important;
+    -webkit-text-fill-color: #f9fafb !important;
+  }
+
+  .styled-input:hover,
+  .styled-password :deep(.p-password-input):hover,
+  .styled-textarea:hover {
+    background: #374151 !important;
+    color: #f9fafb !important;
+    border-color: #4b5563 !important;
+    -webkit-text-fill-color: #f9fafb !important;
+  }
+
+  .styled-input:focus,
+  .styled-password :deep(.p-password-input):focus,
+  .styled-textarea:focus {
+    background: #1f2937 !important;
+    color: #f9fafb !important;
+    border-color: #3b82f6 !important;
+    -webkit-text-fill-color: #f9fafb !important;
+  }
+
+  .input-error {
+    background: #1f2937 !important;
+    color: #f9fafb !important;
+    border-color: #ef4444 !important;
+    -webkit-text-fill-color: #f9fafb !important;
+  }
+
+  .remember-label,
+  .terms-label {
+    color: #f9fafb !important;
+  }
+
+  .input-icon {
+    color: #9ca3af !important;
+  }
+
+  .card-section {
+    background: #1f2937 !important;
+  }
+
+  .success-message {
+    color: #34d399 !important;
+  }
+}
 </style>

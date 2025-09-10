@@ -92,6 +92,22 @@
         </div>
       </div>
 
+      <!-- Bidding Duration (only show if bidding is selected) -->
+      <div v-if="formData.isBidding" class="form-group">
+        <label for="biddingEndTime" class="form-label">Završetak licitacije *</label>
+        <input
+          id="biddingEndTime"
+          v-model="formData.biddingEndTime"
+          type="datetime-local"
+          class="form-input"
+          :class="{ error: errors.biddingEndTime }"
+          :min="minDateTime"
+          required
+        />
+        <span v-if="errors.biddingEndTime" class="error-message">{{ errors.biddingEndTime }}</span>
+        <small class="form-help">Licitacija će se automatski završiti u odabranom vremenu</small>
+      </div>
+
       <!-- Color and Stock -->
       <div class="form-row">
         <div class="form-group half-width">
@@ -192,6 +208,7 @@ const formData = reactive({
   stock: 1,
   description: '',
   isBidding: false,
+  biddingEndTime: '',
 })
 
 // Form errors
@@ -202,11 +219,18 @@ const errors = reactive({
   currentPrice: '',
   stock: '',
   description: '',
+  biddingEndTime: '',
 })
 
 // Computed
+const minDateTime = computed(() => {
+  const now = new Date()
+  now.setHours(now.getHours() + 1) // Minimum 1 hour from now
+  return now.toISOString().slice(0, 16) // Format for datetime-local input
+})
+
 const isFormValid = computed(() => {
-  return (
+  const basicValid = (
     formData.name.trim() &&
     formData.category &&
     formData.image.trim() &&
@@ -215,6 +239,12 @@ const isFormValid = computed(() => {
     formData.description.trim().length >= 10 &&
     formData.description.length <= 500
   )
+  
+  if (formData.isBidding) {
+    return basicValid && formData.biddingEndTime
+  }
+  
+  return basicValid
 })
 
 // Methods
@@ -266,6 +296,26 @@ const validateForm = () => {
   } else if (formData.description.length > 500) {
     errors.description = 'Opis može imati maksimalno 500 znakova'
     isValid = false
+  }
+
+  // Bidding end time validation
+  if (formData.isBidding) {
+    if (!formData.biddingEndTime) {
+      errors.biddingEndTime = 'Završetak licitacije je obavezan'
+      isValid = false
+    } else {
+      const endTime = new Date(formData.biddingEndTime)
+      const now = new Date()
+      const minTime = new Date(now.getTime() + 60 * 60 * 1000) // 1 hour from now
+      
+      if (endTime <= now) {
+        errors.biddingEndTime = 'Završetak licitacije mora biti u budućnosti'
+        isValid = false
+      } else if (endTime < minTime) {
+        errors.biddingEndTime = 'Licitacija mora trajati najmanje 1 sat'
+        isValid = false
+      }
+    }
   }
 
   return isValid
@@ -501,6 +551,13 @@ const showNotification = (message, type) => {
   font-weight: 500;
 }
 
+.form-help {
+  color: #6b7280;
+  font-size: 12px;
+  margin-top: 0.25rem;
+  display: block;
+}
+
 .form-actions {
   display: flex;
   justify-content: space-between;
@@ -606,6 +663,89 @@ const showNotification = (message, type) => {
     left: 20px;
     right: 20px;
     min-width: auto;
+  }
+}
+
+/* Dark mode overrides */
+@media (prefers-color-scheme: dark) {
+  .add-product-form {
+    background: #1f2937 !important;
+    color: #f9fafb !important;
+  }
+
+  .form-header h3,
+  .form-header p,
+  .form-label {
+    color: #f9fafb !important;
+  }
+
+  .form-input,
+  .form-textarea {
+    background: #1f2937 !important;
+    color: #f9fafb !important;
+    border-color: #374151 !important;
+    -webkit-text-fill-color: #f9fafb !important;
+  }
+
+  input[type="datetime-local"] {
+    background: #1f2937 !important;
+    color: #f9fafb !important;
+    border-color: #374151 !important;
+    -webkit-text-fill-color: #f9fafb !important;
+  }
+
+  input[type="datetime-local"]::-webkit-calendar-picker-indicator {
+    filter: invert(1);
+  }
+
+  .form-input:hover,
+  .form-textarea:hover {
+    background: #374151 !important;
+    color: #f9fafb !important;
+    border-color: #4b5563 !important;
+    -webkit-text-fill-color: #f9fafb !important;
+  }
+
+  .form-input:focus,
+  .form-textarea:focus {
+    background: #1f2937 !important;
+    color: #f9fafb !important;
+    border-color: #3b82f6 !important;
+    -webkit-text-fill-color: #f9fafb !important;
+  }
+
+  .form-input.error,
+  .form-textarea.error {
+    background: #1f2937 !important;
+    color: #f9fafb !important;
+    border-color: #ef4444 !important;
+    -webkit-text-fill-color: #f9fafb !important;
+  }
+
+  .checkbox-group label {
+    color: #f9fafb !important;
+  }
+
+  .form-help {
+    color: #9ca3af !important;
+  }
+
+  .image-upload-area {
+    background: #374151 !important;
+    border-color: #4b5563 !important;
+    color: #f9fafb !important;
+  }
+
+  .duration-option {
+    background: #374151 !important;
+    border-color: #4b5563 !important;
+    color: #f9fafb !important;
+  }
+
+  .duration-option.selected {
+    background: #3b82f6 !important;
+    border-color: #3b82f6 !important;
+    color: white !important;
   }
 }
 </style>

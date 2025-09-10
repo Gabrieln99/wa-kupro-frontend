@@ -531,4 +531,64 @@ onMounted(() => {
     flex-direction: column;
   }
 }
+
+/* Dark mode overrides */
+@media (prefers-color-scheme: dark) {
+  .edit-product-form {
+    background: #1f2937 !important;
+    color: #f9fafb !important;
+  }
+
+  .form-header h3,
+  .form-header p,
+  .form-label {
+    color: #f9fafb !important;
+  }
+
+  .form-input,
+  .form-textarea {
+    background: #1f2937 !important;
+    color: #f9fafb !important;
+    border-color: #374151 !important;
+    -webkit-text-fill-color: #f9fafb !important;
+  }
+
+  .form-input:hover,
+  .form-textarea:hover {
+    background: #374151 !important;
+    color: #f9fafb !important;
+    border-color: #4b5563 !important;
+    -webkit-text-fill-color: #f9fafb !important;
+  }
+
+  .form-input:focus,
+  .form-textarea:focus {
+    background: #1f2937 !important;
+    color: #f9fafb !important;
+    border-color: #3b82f6 !important;
+    -webkit-text-fill-color: #f9fafb !important;
+  }
+
+  .form-input.error,
+  .form-textarea.error {
+    background: #1f2937 !important;
+    color: #f9fafb !important;
+    border-color: #ef4444 !important;
+    -webkit-text-fill-color: #f9fafb !important;
+  }
+
+  .checkbox-group label {
+    color: #f9fafb !important;
+  }
+
+  .image-upload-area {
+    background: #374151 !important;
+    border-color: #4b5563 !important;
+    color: #f9fafb !important;
+  }
+
+  .form-actions {
+    border-color: #374151 !important;
+  }
+}
 </style>
