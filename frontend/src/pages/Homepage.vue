@@ -106,8 +106,10 @@ const loading = ref(true)
 onMounted(async () => {
   try {
     const response = await productService.getProducts()
+    // Handle new API response format - extract products array
+    const productsData = response.data.products || response.data || []
     // Get the 6 most recent products (sorted by creation date, newest first)
-    recentAds.value = response.data
+    recentAds.value = productsData
       .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
       .slice(0, 6)
   } catch (error) {

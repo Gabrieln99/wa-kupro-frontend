@@ -446,6 +446,8 @@ const handleRegister = async () => {
   try {
     loading.value = true
 
+    console.log('📋 Registration form data being sent:', formData)
+
     await userService.register(formData)
 
     toast.add({
@@ -457,10 +459,13 @@ const handleRegister = async () => {
 
     router.push('/login')
   } catch (error) {
+    console.error('❌ Registration error:', error)
+    console.error('❌ Error response:', error.response?.data)
+
     toast.add({
       severity: 'error',
       summary: 'Greška',
-      detail: error.message || 'Registracija neuspješna',
+      detail: error.response?.data?.message || error.message || 'Registracija neuspješna',
       life: 5000,
     })
   } finally {
