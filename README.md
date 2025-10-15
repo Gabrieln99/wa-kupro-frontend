@@ -7,3 +7,11 @@ https://www.figma.com/design/2zj8NAuQKlGHFBOw12adIY/KuPro?t=MtLwl3cSCGvTEZdN-0
 
 Link web aplikacije:
 https://kupro.netlify.app/
+
+
+Admin:
+username: ivica
+password: NekaJakaLozinka
+
+user:
+potrebna registracija
